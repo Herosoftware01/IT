@@ -31,7 +31,8 @@ ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.81', '103.125.155.133', 'localhost', '12
 # Application definition
 
 INSTALLED_APPS = [
-    'unfold',
+    'jazzmin',
+    #'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
