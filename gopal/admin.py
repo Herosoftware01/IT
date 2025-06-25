@@ -4,6 +4,7 @@ from .models import Empstaff
 class EmpstaffAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
     search_fields = ('name', 'wunit', 'workunit')
+    list_filter = ('wunit', 'workunit', 'hostel')
    
 
     def get_queryset(self, request):
