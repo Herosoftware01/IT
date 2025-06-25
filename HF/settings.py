@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App',
+    'dhana',
 ]
 
 MIDDLEWARE = [
@@ -103,7 +104,7 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['App.database_router.MasterRouter']
+DATABASE_ROUTERS = ['App.database_router.MasterRouter','dhana.database_router.MasterRouter']
 
 
 # Password validation
