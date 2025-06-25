@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'App',
     'dhana',
+    'gopal',
 ]
 
 MIDDLEWARE = [
@@ -105,7 +106,7 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['App.database_router.MasterRouter','dhana.database_router.MasterRouter']
+DATABASE_ROUTERS = ['App.database_router.MasterRouter','dhana.database_router.MasterRouter','gopal.database_router.MasterRouter']
 
 
 # Password validation
