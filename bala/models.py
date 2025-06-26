@@ -82,4 +82,3 @@ class EmpAttendanceFact(models.Model):
 
     
 
-   
