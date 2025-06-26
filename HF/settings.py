@@ -31,7 +31,8 @@ ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.81', '103.125.155.133', 'localhost', '12
 # Application definition
 
 INSTALLED_APPS = [
-    'unfold',
+    'jazzmin',
+    #'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App',
+    'dhana',
     'gopal',
+    'bala',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +107,7 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['App.database_router.MasterRouter','gopal.database_router.MasterRouter']
+DATABASE_ROUTERS = ['App.database_router.MasterRouter','dhana.database_router.MasterRouter','gopal.database_router.MasterRouter']
 
 
 # Password validation
