@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import AllotOrderKisbal
+from .models import AllotOrderKisbal,OrdSampleStatus
 
 
 class AllotOrderKisbalAdmin(admin.ModelAdmin):
@@ -18,5 +18,21 @@ class AllotOrderKisbalAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" width="100" height="100" />', obj.orderimage)
         return "-"
     display_order_image.short_description = 'Order Image'
+
+
+class OrdSampleStatusAdmin(admin.ModelAdmin):
+    list_display = ('print','display_order_image','emb','status','topbottomimg','remarks','stock','cutqty','active','o_finaldelvdate','jobno','merch','buy','buyer','sample_status'
+    )
+
+    def get_queryset(self, request):
+       return super().get_queryset(request).using('mssql')
+
+    def display_order_image(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" />', obj.image)
+        return "-"
+    display_order_image.short_description = 'Order Image'
+
+admin.site.register(OrdSampleStatus, OrdSampleStatusAdmin)
 
 admin.site.register(AllotOrderKisbal, AllotOrderKisbalAdmin)
