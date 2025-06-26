@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empstaff, OrdStk
+from .models import Empstaff, FabYarn
 
 class EmpstaffAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
@@ -11,18 +11,19 @@ class EmpstaffAdmin(admin.ModelAdmin):
         return super().get_queryset(request).using('mssql')
         return super().get_queryset(request).using('demo')
 
-class ordStkAdmin(admin.ModelAdmin):
-    list_display = ('trstype', 'total', 'unit', 'jobno', 'tb', 'clr', 'bc', 'sew', 'che', 'irn', 'pack', 'oth', 'mist',
-                    'trstype_all', 'deldt', 'merch', 'admin_image_preview', 'tbimage',
-                    'director_sample_order', 'finaldelvdate', 'final_year_delivery', 'insdatenew', 'c')
-    search_fields = ('jobno',)
-    list_filter = ('trstype',)
+class FabYarnAdmin(admin.ModelAdmin):
+    list_display = ( 'admin_image_preview','fabty', 'supplier', 'orderno', 'clr', 'fabric', 'prs', 'kg')
+    search_fields = ('fabty', 'supplier', 'orderno', 'clr', 'fabric')
+    list_filter = ('fabty', 'supplier')
+    list_per_page = 10 
+
 
     def get_queryset(self, request):
         return super().get_queryset(request).using('mssql')
-        return super().get_queryset(request).using('demo')
+        return super().get_queryset(request).using('demo')  
 
 admin.site.register(Empstaff, EmpstaffAdmin)
-admin.site.register(OrdStk, ordStkAdmin)
+admin.site.register(FabYarn, FabYarnAdmin)
+
 
 # Register your models here.
