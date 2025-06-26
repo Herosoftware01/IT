@@ -1,6 +1,6 @@
 import pathlib
 
-p = pathlib.Path("App/models.py")
+p = pathlib.Path("bala/get.py")
 
 # Read as text, replacing any decoding errors with a placeholder
 text = p.read_text(encoding="utf-8", errors="replace")

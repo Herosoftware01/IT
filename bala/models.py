@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import mark_safe
 
 class OrdStk(models.Model):
     trstype = models.CharField(db_column='Trstype', max_length=6)  # Field name made lowercase.
@@ -29,5 +30,56 @@ class OrdStk(models.Model):
     class Meta:
         managed = False
         db_table = 'Ord_stk'
+    
+    def admin_image(self):
+        if self.orderimage:
+            return mark_safe(f'<img src="{self.orderimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
+        return "No Image"
+    admin_image.short_description = "OrdImage"
+
+    
+    def admin_image1(self):
+        if self.tbimage:
+            return mark_safe(f'<img src="{self.tbimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
+        return "No Image"
+    admin_image1.short_description = "tbImage"
 
 
+
+
+class EmpAttendanceFact(models.Model):
+
+    code_emb_attendance_fact = models.IntegerField(db_column='Code Emb Attendance Fact', blank=True,primary_key= True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+
+    date = models.DateTimeField(db_column='Date', blank=True, null=True)  # Field name made lowercase.
+
+    name = models.CharField(max_length=100, blank=True, null=True)
+
+    intime = models.DateTimeField(blank=True, null=True)
+
+    outtime = models.DateTimeField(blank=True, null=True)
+
+    emppic = models.CharField(db_column='Emppic', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+
+    con_code_name_in_out = models.CharField(db_column='Con_Code_name_in_out', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+
+    rel_code_name = models.CharField(db_column='Rel_code_name', max_length=112, blank=True, null=True)  # Field name made lowercase.
+  
+
+
+
+    class Meta:
+
+        managed = False
+
+        db_table = 'Emp_Attendance_Fact'
+
+    def admin_image_preview(self):
+        if self.emppic:
+            return mark_safe(f'<img src="{self.emppic}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
+        return "No Image"
+    admin_image_preview.short_description = "Image"
+
+    
+
+   
