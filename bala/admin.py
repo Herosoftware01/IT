@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import OrdStk,EmpAttendanceFact,OrdSampleStatus,AllotPen
+from .models import OrdStk,EmpAttendanceFact,OrdSampleStatus,AllotPen,FabRgbMatrplan
 # Register your models here.
 class OrdStkAdmin(admin.ModelAdmin):
     list_display = ('admin_image','admin_image1','trstype', 'total', 'unit', 'jobno', 'tb', 'clr', 'bc', 'sew', 'che', 'irn', 'pack', 'oth', 'mist',
@@ -45,9 +45,26 @@ class AllotPenAdmin(admin.ModelAdmin):
     search_fields = ('jobno_oms','jobnoomsnew','pono','company_name')
 
     def get_queryset(self, request):
-       return super().get_queryset(request).using('mssql')
+       return super().get_queryset(request).using('mssql') 
 
+class FabRgbMatrplanAdmin(admin.ModelAdmin):           
+    list_display = ('jobno', 'combocolor', 'mp', 'ip', 'dyeclr', 'prnclr',
+                        'gsm', 'fdia', 'kdia', 'pcswgt', 'size', 'losspercent',
+                        'quantity', 'fabricno', 'ord_image', 'hex', 'fimage',
+                        'fabty', 'withoutfabimg', 'withoutrgb', 'fabric',
+                        'yarninfo', 'll', 'con_dyeclr_prnclr',
+                        'con_ord_clr_fab', 'withoutll', 'o_buyer',
+                        'o_merch')
+
+    search_fields = ('jobno','combocolor','mp','ip','dyeclr','prnclr')              
+    list_filter = ('jobno', 'combocolor', 'mp', 'ip', 'dyeclr', 'prnclr')
+            
+    def get_queryset(self, request):
+       return super().get_queryset(request).using('mssql') 
+    
 admin.site.register(OrdStk,OrdStkAdmin)
 admin.site.register(EmpAttendanceFact, EmpAttendanceFactAdmin)
 admin.site.register(OrdSampleStatus, OrdSampleStatusAdmin)
 admin.site.register(AllotPen, AllotPenAdmin)
+admin.site.register(FabRgbMatrplan, FabRgbMatrplanAdmin)    
+
