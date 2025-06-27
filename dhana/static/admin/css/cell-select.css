@@ -1,0 +1,4 @@
+.selected-cell {
+    background-color: red !important;
+    color: white;
+}

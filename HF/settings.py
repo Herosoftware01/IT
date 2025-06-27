@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,7 @@ ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.81', '103.125.155.133', 'localhost', '12
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    # 'jazzmin',
     #'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -144,7 +145,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+# settings.py
+STATIC_URL = '/static/'
+
+# Optional (for dev mode)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# For production (collectstatic output)
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
