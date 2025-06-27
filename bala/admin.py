@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import OrdStk,EmpAttendanceFact,OrdSampleStatus
+from .models import OrdStk,EmpAttendanceFact,OrdSampleStatus,AllotPen
 # Register your models here.
 class OrdStkAdmin(admin.ModelAdmin):
     list_display = ('admin_image','admin_image1','trstype', 'total', 'unit', 'jobno', 'tb', 'clr', 'bc', 'sew', 'che', 'irn', 'pack', 'oth', 'mist',
@@ -13,7 +13,7 @@ class OrdStkAdmin(admin.ModelAdmin):
   
     def get_queryset(self, request):
        return super().get_queryset(request).using('mssql')
-
+    
 class EmpAttendanceFactAdmin(admin.ModelAdmin):
     list_display = ('admin_image_preview','code_emb_attendance_fact', 'date', 'name', 'intime', 'outtime',
                     'con_code_name_in_out', 'rel_code_name')        
@@ -32,7 +32,22 @@ class OrdSampleStatusAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
        return super().get_queryset(request).using('mssql')
+    
+
+class AllotPenAdmin(admin.ModelAdmin):
+    list_display = ('jobno_oms', 'jobnoomsnew', 'ordimg1_pen', 'final_delivery_date',
+                    'finaldelvdate1', 'year', 'final_year_delivery', 'ddays', 'fdays',
+                    'insdays', 'finaldelvdate', 'ourdeldate', 'date', 'ourdelvdate',
+                    'podate', 'vessel_dt', 'vessel_yr', 'pono', 'shipmentcompleted',
+                    'reference', 'no', 'company_name', 'image_order', 'abc',
+                    'order_follow_up')
+
+    search_fields = ('jobno_oms','jobnoomsnew','pono','company_name')
+
+    def get_queryset(self, request):
+       return super().get_queryset(request).using('mssql')
 
 admin.site.register(OrdStk,OrdStkAdmin)
 admin.site.register(EmpAttendanceFact, EmpAttendanceFactAdmin)
 admin.site.register(OrdSampleStatus, OrdSampleStatusAdmin)
+admin.site.register(AllotPen, AllotPenAdmin)
