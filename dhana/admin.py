@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import AllotOrderKisbal,OrdSampleStatus,PrintRgbAlt,ImagePrint,VueYarnStock,VueKnitdtlProgramBalance,GeneralDeliveryReport,EmpMasAll
+from .models import AllotOrderKisbal,OrdSampleStatus,PrintRgbAlt,ImagePrint,VueYarnStock,VueKnitdtlProgramBalance,GeneralDeliveryReport,EmpMasAll,Staffpre,TBuyer
 
 
 class AllotOrderKisbalAdmin(admin.ModelAdmin):
@@ -181,6 +181,15 @@ class EmpMasAllAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).using('mssql')
+    
+    def changelist_view(self, request, extra_context=None):
+        if extra_context is None:
+            extra_context = {}
+        extra_context['custom_button'] = True  
+        return super().changelist_view(request, extra_context=extra_context)
+
+    def has_add_permission(self, request):
+        return True
 
     class Media:
         js = ('admin/js/cell-select.js',)
@@ -189,7 +198,40 @@ class EmpMasAllAdmin(admin.ModelAdmin):
         }
 
 
+class StaffpreAdmin(admin.ModelAdmin):
+    list_display = (
+        'code','name','wunit','cat','prsdtls','prsdis','mobileno',
+        'intercom','status','attach','hostel','roomdtls','orissa',
+        'bank','accountdetails','branch','badd','ifscno','bact','bank1','accountdetails1','branch1',
+        'badd1','ifscno1','qulification','dtjoin','dtresign','dtrsysdt','pftype','inch','ej',
+        'vanno','pfno','esino','ladd1','ladd2','lcity',
+        'lstate','lpincode','padd1','padd2','pcity','pstate','ppincode','emc','relation','emc_pers','bg',
+        'time_template','esiyn','pfyn','senior','time_template1','createdate','modifieddate','timestamp',
+        'id','ebcharge','mcategory','lastname','mcateid','prab'
+    )
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).using('mssql')
+
+    class Media:
+        js = ('admin/js/cell-select.js',)
+        css = {
+            'all': ('admin/css/cell-select.css',)
+        }
+
+
+class TBuyerAdmin(admin.ModelAdmin):
+    list_display = ('buyerid', 'buyername', 'orderno', 'date', 'guid', 'refresh')
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).using('demo')
+
+    def save_model(self, request, obj, form, change):
+        obj.save(using='demo')
+
+admin.site.register(TBuyer,TBuyerAdmin)
+
+admin.site.register(Staffpre, StaffpreAdmin)
 admin.site.register(EmpMasAll, EmpMasAllAdmin)
 admin.site.register(GeneralDeliveryReport, GeneralDeliveryReportAdmin)
 admin.site.register(VueKnitdtlProgramBalance, VueKnitdtlProgramBalanceAdmin)

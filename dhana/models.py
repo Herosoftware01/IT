@@ -262,3 +262,86 @@ class EmpMasAll(models.Model):
     class Meta:
         managed = False
         db_table = 'Emp_Mas_All'
+
+
+class Staffpre(models.Model):
+    id = models.IntegerField(primary_key=True)
+    code = models.IntegerField()
+    name = models.CharField(max_length=70)
+    wunit = models.CharField(max_length=70, blank=True, null=True)
+    cat = models.CharField(max_length=70, blank=True, null=True)
+    prsdtls = models.CharField(max_length=500, blank=True, null=True)
+    prsdis = models.CharField(max_length=500, blank=True, null=True)
+    mobileno = models.CharField(max_length=50, blank=True, null=True)
+    intercom = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+    attach = models.CharField(max_length=1550, blank=True, null=True)
+    hostel = models.CharField(max_length=50, blank=True, null=True)
+    roomdtls = models.CharField(db_column='Roomdtls', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    orissa = models.CharField(max_length=3, blank=True, null=True)
+    bank = models.CharField(db_column='Bank', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    accountdetails = models.CharField(db_column='Accountdetails', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    branch = models.CharField(max_length=200, blank=True, null=True)
+    badd = models.CharField(max_length=200, blank=True, null=True)
+    ifscno = models.CharField(max_length=200, blank=True, null=True)
+    bact = models.CharField(max_length=1, blank=True, null=True)
+    bank1 = models.CharField(max_length=200, blank=True, null=True)
+    accountdetails1 = models.CharField(db_column='Accountdetails1', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    branch1 = models.CharField(max_length=200, blank=True, null=True)
+    badd1 = models.CharField(max_length=200, blank=True, null=True)
+    ifscno1 = models.CharField(max_length=200, blank=True, null=True)
+    qulification = models.CharField(max_length=50, blank=True, null=True)
+    dtjoin = models.DateTimeField(blank=True, null=True)
+    dtresign = models.DateTimeField(blank=True, null=True)
+    dtrsysdt = models.DateTimeField(blank=True, null=True)
+    pftype = models.CharField(max_length=10, blank=True, null=True)
+    inch = models.CharField(max_length=3, blank=True, null=True)
+    ej = models.DateTimeField(blank=True, null=True)
+    vanno = models.CharField(max_length=50, blank=True, null=True)
+    pfno = models.CharField(max_length=50, blank=True, null=True)
+    esino = models.CharField(max_length=50, blank=True, null=True)
+    ladd1 = models.CharField(db_column='LADD1', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    ladd2 = models.CharField(db_column='LADD2', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    lcity = models.CharField(max_length=50, blank=True, null=True)
+    lstate = models.CharField(max_length=50, blank=True, null=True)
+    lpincode = models.CharField(max_length=50, blank=True, null=True)
+    padd1 = models.CharField(db_column='PADD1', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    padd2 = models.CharField(db_column='PADD2', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    pcity = models.CharField(db_column='PCITY', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    pstate = models.CharField(db_column='PSTATE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    ppincode = models.CharField(db_column='PPINCODE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    emc = models.CharField(db_column='EMC', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    relation = models.CharField(max_length=30, blank=True, null=True)
+    emc_pers = models.CharField(max_length=50, blank=True, null=True)
+    bg = models.CharField(max_length=50, blank=True, null=True)
+    time_template = models.CharField(db_column='Time_Template', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    esiyn = models.CharField(max_length=3, blank=True, null=True)
+    pfyn = models.CharField(max_length=3, blank=True, null=True)
+    senior = models.CharField(max_length=3, blank=True, null=True)
+    time_template1 = models.CharField(db_column='Time_Template1', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    createdate = models.DateTimeField()
+    modifieddate = models.DateTimeField()
+    timestamp = models.TextField()  # This field type is a guess.
+    ebcharge = models.DecimalField(max_digits=18, decimal_places=2, blank=True, null=True)
+    mcategory = models.CharField(db_column='Mcategory', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    lastname = models.CharField(db_column='LastName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    mcateid = models.IntegerField(db_column='Mcateid', blank=True, null=True)  # Field name made lowercase.
+    prab = models.CharField(max_length=7)
+
+    class Meta:
+        managed = False
+        db_table = 'StaffPre'
+
+
+class TBuyer(models.Model):
+    buyerid = models.IntegerField(db_column='BuyerID', primary_key=True)  # Field name made lowercase.
+    buyername = models.CharField(db_column='BuyerName', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    orderno = models.CharField(db_column='OrderNo', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    date = models.DateField(db_column='Date', blank=True, null=True)  # Field name made lowercase.
+    guid = models.CharField(db_column='Guid', max_length=36, blank=True, null=True)  # Field name made lowercase.
+    refresh = models.CharField(db_column='Refresh', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'T_Buyer'
+        app_label = 'dhana'
