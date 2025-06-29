@@ -1,0 +1,12 @@
+.selected-cell {
+    background-color: rgb(72, 158, 207) !important;
+    color: white;
+}
+
+a.button {
+    background: #28a745;
+    color: white !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}

@@ -2,10 +2,6 @@ from django.contrib import admin
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import AllotOrderKisbal,OrdSampleStatus,PrintRgbAlt,ImagePrint,VueYarnStock,VueKnitdtlProgramBalance,GeneralDeliveryReport,EmpMasAll,Staffpre,TBuyer
-from django.template.response import TemplateResponse
-from django_pivot.pivot import pivott
-
-from django.urls import path
 
 class AllotOrderKisbalAdmin(admin.ModelAdmin):
     list_display = (
@@ -236,30 +232,9 @@ class StaffpreAdmin(admin.ModelAdmin):
 # admin.site.register(TBuyer,TBuyerAdmin)
 
 
-class PivotAdminView(admin.ModelAdmin):
-    change_list_template = "admin/pivot_tbuyer.html"
+##
 
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('pivot/', self.admin_site.admin_view(self.pivot_view), name="pivot-tbuyer"),
-        ]
-        return custom_urls + urls
-
-    def pivot_view(self, request):
-        # Sample pivot: buyername vs orderno count
-        data = TBuyer.objects.using('demo').values('buyername', 'orderno')
-        pivot_data = pivot(data, 'buyername', 'orderno', 'orderno', aggfunc=len)
-
-        return TemplateResponse(request, "admin/pivot_tbuyer.html", {
-            "title": "TBuyer Pivot Table",
-            "pivot_data": pivot_data
-        })
-
-
-from django.contrib.contenttypes.models import ContentType
-admin.site.register(ContentType, PivotAdminView)
-
+#
 admin.site.register(Staffpre, StaffpreAdmin)
 admin.site.register(EmpMasAll, EmpMasAllAdmin)
 admin.site.register(GeneralDeliveryReport, GeneralDeliveryReportAdmin)
