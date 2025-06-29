@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empstaff, FabYarn
+from .models import Empstaff, FabYarn, Employeelogin
 
 class EmpstaffAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
@@ -22,8 +22,17 @@ class FabYarnAdmin(admin.ModelAdmin):
         return super().get_queryset(request).using('mssql')
         return super().get_queryset(request).using('demo')  
 
+class EmployeeloginAdmin(admin.ModelAdmin):
+    list_display = ('code', 'name', 'hod', 'hodid', 'email')
+    search_fields = ('name', 'email')
+    list_filter = ('hod',)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).using('demo')  
+
 admin.site.register(Empstaff, EmpstaffAdmin)
 admin.site.register(FabYarn, FabYarnAdmin)
+admin.site.register(Employeelogin, EmployeeloginAdmin)
 
 
 # Register your models here.

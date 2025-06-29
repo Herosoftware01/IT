@@ -32,7 +32,11 @@ ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.81', '103.125.155.133', 'localhost', '12
 # Application definition
 
 INSTALLED_APPS = [
+<<<<<<< HEAD
     # 'jazzmin',
+=======
+    #'jazzmin',
+>>>>>>> gopal
     #'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
