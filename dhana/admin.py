@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import AllotOrderKisbal,OrdSampleStatus,PrintRgbAlt,ImagePrint,VueYarnStock,VueKnitdtlProgramBalance,GeneralDeliveryReport,EmpMasAll,Staffpre,TBuyer
 
-
 class AllotOrderKisbalAdmin(admin.ModelAdmin):
     list_display = (
         'display_order_image','orderno', 'colour', 'con_tot', 'sizes',
@@ -220,17 +219,22 @@ class StaffpreAdmin(admin.ModelAdmin):
         }
 
 
-class TBuyerAdmin(admin.ModelAdmin):
-    list_display = ('buyerid', 'buyername', 'orderno', 'date', 'guid', 'refresh')
+# class TBuyerAdmin(admin.ModelAdmin):
+#     list_display = ('buyerid', 'buyername', 'orderno', 'date', 'guid', 'refresh')
 
-    def get_queryset(self, request):
-        return super().get_queryset(request).using('demo')
+#     def get_queryset(self, request):
+#         return super().get_queryset(request).using('demo')
 
-    def save_model(self, request, obj, form, change):
-        obj.save(using='demo')
+#     def save_model(self, request, obj, form, change):
+#         obj.save(using='demo')
 
-admin.site.register(TBuyer,TBuyerAdmin)
 
+# admin.site.register(TBuyer,TBuyerAdmin)
+
+
+##
+
+#
 admin.site.register(Staffpre, StaffpreAdmin)
 admin.site.register(EmpMasAll, EmpMasAllAdmin)
 admin.site.register(GeneralDeliveryReport, GeneralDeliveryReportAdmin)
