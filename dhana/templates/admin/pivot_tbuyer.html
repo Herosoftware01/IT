@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+{% load custom_filters %}
+
+{% block content %}
+  <h1>TBuyer Pivot Table</h1>
+  <table border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Buyer Name</th>
+        {% for col in pivot_data.columns %}
+          <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row_label, row in pivot_data.iterrows %}
+        <tr>
+          <td>{{ row_label }}</td>
+          {% for col in pivot_data.columns %}
+            <td>{{ row|get_item:col }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use strict';
 {
     // Call function fn when the DOM is loaded and ready. If it is already
@@ -27,3 +28,22 @@
         });
     });
 }
+=======
+(function($) {
+    'use strict';
+
+    $(document).ready(function() {
+        $('.cancel-link').click(function(e) {
+            e.preventDefault();
+            const parentWindow = window.parent;
+            if (parentWindow && typeof(parentWindow.dismissRelatedObjectModal) === 'function' && parentWindow !== window) {
+                parentWindow.dismissRelatedObjectModal();
+            } else {
+                // fallback to default behavior
+                window.history.back();
+            }
+            return false;
+        });
+    });
+})(django.jQuery);
+>>>>>>> 7f246f6795f13c1deb8e26559e17f430df061c0d

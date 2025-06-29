@@ -1,4 +1,18 @@
 .selected-cell {
+<<<<<<< HEAD
     background-color: red !important;
     color: white;
 }
+=======
+    background-color: rgb(72, 158, 207) !important;
+    color: white;
+}
+
+a.button {
+    background: #28a745;
+    color: white !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+>>>>>>> 7f246f6795f13c1deb8e26559e17f430df061c0d
