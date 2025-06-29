@@ -222,6 +222,8 @@ class StaffpreAdmin(admin.ModelAdmin):
 
 class TBuyerAdmin(admin.ModelAdmin):
     list_display = ('buyerid', 'buyername', 'orderno', 'date', 'guid', 'refresh')
+    search_fields = ('buyerid', 'buyername', 'orderno', 'date', 'guid', 'refresh')
+    list_filter = ('buyerid', 'buyername', 'orderno', 'date', 'guid', 'refresh') 
 
     def get_queryset(self, request):
         return super().get_queryset(request).using('demo')
