@@ -56,3 +56,17 @@ class FabYarn(models.Model):
             return mark_safe(f'<img src="{self.image_order}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
         return "No Image"
     admin_image_preview.short_description = "Image"
+
+
+class Employeelogin(models.Model):
+    code = models.IntegerField(db_column='Code', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    hod = models.BooleanField(db_column='HOD')  # Field name made lowercase.
+    hodid = models.IntegerField(db_column='HODID', blank=True, null=True)  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    email = models.CharField(db_column='Email', unique=True, max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    ot = models.BooleanField(db_column='OT')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'EmployeeLogin'
