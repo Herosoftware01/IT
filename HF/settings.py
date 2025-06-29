@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'dhana',
     'gopal',
     'bala',
+ 
 ]
 
 MIDDLEWARE = [

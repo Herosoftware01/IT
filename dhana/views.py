@@ -66,3 +66,6 @@ def dashboard(request):
 #     pyg_html = walk(df, return_html=True)  # returns interactive UI
 
 #     return render(request, 'dashboard.html', {'pyg_html': pyg_html})
+
+
+
