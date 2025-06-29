@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class AllotOrderKisbal(models.Model):
     orderno = models.CharField(db_column='OrderNo', max_length=50, primary_key=True)  # Field name made lowercase.
@@ -83,5 +82,266 @@ class OrdSampleStatus(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Ord_Sample Status'
+        db_table = 'Ord_Sample_Status'
+        app_label = 'dhana'
+
+
+
+class PrintRgbAlt(models.Model):
+    jobno_joint = models.CharField(db_column='Jobno Joint', max_length=50, primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    prnclr = models.CharField(max_length=50, blank=True, null=True)
+    jobno_print_emb = models.CharField(db_column='Jobno Print Emb', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    img_fpath = models.CharField(db_column='Img_Fpath', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+    hex = models.CharField(max_length=15, blank=True, null=True)
+    print_img_pen = models.CharField(db_column='Print_img_pen', max_length=13)  # Field name made lowercase.
+    image_tb = models.CharField(db_column='Image_tb', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+    con_fimg_grclr = models.CharField(db_column='Con_Fimg_grclr', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    con_jobno_print = models.CharField(db_column='Con_jobno_Print', max_length=802, blank=True, null=True)  # Field name made lowercase.
+    jobno_print_new_rgb = models.CharField(db_column='Jobno_Print_New_RGB', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    con_jobno_prndes = models.CharField(db_column='Con_Jobno_PrnDes', max_length=102, blank=True, null=True)  # Field name made lowercase.
+    con_jobno_top_clr_line = models.CharField(db_column='Con_jobno_top_clr_line', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    con_jobno_top_clr_siz_line = models.CharField(max_length=250, blank=True, null=True)
+    con_inout_outsup = models.CharField(db_column='Con_InOut_Outsup', max_length=67, blank=True, null=True)  # Field name made lowercase.
+    print_screen_1 = models.CharField(db_column='Print Screen 1', max_length=150, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_screen_2 = models.CharField(db_column='Print Screen 2', max_length=150, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_screen_3 = models.CharField(db_column='Print Screen 3', max_length=150, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    top_bottom = models.CharField(db_column='Top Bottom', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    clrcomb = models.CharField(max_length=100, blank=True, null=True)
+    screen_number = models.IntegerField(db_column='Screen Number', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_type = models.CharField(db_column='Print Type', max_length=25, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_description = models.CharField(db_column='Print Description', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    individual_part_print_emb = models.CharField(db_column='Individual Part Print Emb', max_length=250, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colours = models.IntegerField(db_column='Print Colours', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_emb_ground_colour = models.CharField(db_column='Print & Emb Ground Colour', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    inside_outside_print_emb = models.CharField(db_column='Inside,Outside Print Emb', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_emb_outside_supplier = models.CharField(db_column='Print Emb Outside Supplier', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_1 = models.CharField(db_column='Print Colour 1', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_2 = models.CharField(db_column='Print Colour 2', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_3 = models.CharField(db_column='Print Colour 3', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_4 = models.CharField(db_column='Print Colour 4', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_5 = models.CharField(db_column='Print Colour 5', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_6 = models.CharField(db_column='Print Colour 6', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_7 = models.CharField(db_column='Print Colour 7', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_8 = models.CharField(db_column='Print Colour 8', max_length=80, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_size_details = models.CharField(db_column='Print Size Details', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_emb_ground_colour_rgb = models.CharField(db_column='Print & Emb Ground Colour RGB', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    img_print = models.CharField(db_column='Img_Print', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+    img_print_mmt = models.CharField(db_column='Img_Print_MMT', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+    con_jobno_top_clr_siz = models.CharField(db_column='Con_jobno_top_clr_siz', max_length=256, blank=True, null=True)  # Field name made lowercase.
+    con_jobno_top_clr = models.CharField(db_column='Con_jobno_top_clr', max_length=204, blank=True, null=True)  # Field name made lowercase.
+    rgb = models.CharField(db_column='RGB', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    print_colour_rgb_1 = models.CharField(db_column='Print Colour RGB 1', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_2 = models.CharField(db_column='Print Colour RGB 2', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_3 = models.CharField(db_column='Print Colour RGB 3', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_4 = models.CharField(db_column='Print Colour RGB 4', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_5 = models.CharField(db_column='Print Colour RGB 5', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_6 = models.CharField(db_column='Print Colour RGB 6', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_7 = models.CharField(db_column='Print Colour RGB 7', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    print_colour_rgb_8 = models.CharField(db_column='Print  Colour RGB 8', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+
+    class Meta:
+        managed = False
+        db_table = 'Print_RGB_Alt'
+        app_label = 'dhana'
+
+class ImagePrint(models.Model):
+    jobno_image_print = models.CharField(db_column='Jobno Image Print', max_length=50,primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    ty = models.CharField(max_length=5)
+    mainpart = models.CharField(db_column='MainPart', max_length=50)  # Field name made lowercase.
+    color = models.CharField(db_column='Color', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    indpart = models.CharField(db_column='Indpart', max_length=250)  # Field name made lowercase.
+    img_print = models.CharField(db_column='Img_Print', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+    img_print_measurement = models.CharField(db_column='Img_Print_measurement', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Image Print'
+
+class VueYarnStock(models.Model):
+    date = models.DateTimeField()
+    supplierid = models.IntegerField(primary_key=True)
+    suppliername = models.CharField(max_length=35, blank=True, null=True)
+    orderno = models.CharField(max_length=50, blank=True, null=True)
+    yarnid = models.IntegerField(blank=True, null=True)
+    yarnname = models.CharField(max_length=35)
+    colourid = models.IntegerField(blank=True, null=True)
+    clrname = models.CharField(max_length=50)
+    kg = models.DecimalField(max_digits=38, decimal_places=10, blank=True, null=True)
+    rate = models.DecimalField(max_digits=38, decimal_places=19)
+
+    class Meta:
+        managed = False
+        db_table = 'vue_Yarn_Stock'
+
+class VueKnitdtlProgramBalance(models.Model):
+    date = models.DateTimeField(db_column='Date')  # Field name made lowercase.
+    supplier = models.CharField(db_column='Supplier', max_length=35, blank=True, null=True)  # Field name made lowercase.
+    no = models.IntegerField(db_column='No')  # Field name made lowercase.
+    supplierid = models.IntegerField(db_column='SupplierID')  # Field name made lowercase.
+    orderno = models.CharField(db_column='OrderNo', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    fabricid = models.IntegerField(db_column='FabricID',primary_key=True)  # Field name made lowercase.
+    colourid = models.IntegerField(db_column='ColourID', blank=True, null=True)  # Field name made lowercase.
+    diaid = models.IntegerField(db_column='DiaID')  # Field name made lowercase.
+    wgt = models.DecimalField(max_digits=18, decimal_places=4)
+    qty = models.DecimalField(db_column='Qty', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    rec = models.DecimalField(max_digits=38, decimal_places=4, blank=True, null=True)
+    recd1 = models.DecimalField(max_digits=38, decimal_places=4, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vue_knitdtl_Program_Balance'
+
+
+class GeneralDeliveryReport(models.Model):
+    lz_no = models.IntegerField(db_column='LZ_No',primary_key=True)  # Field name made lowercase.
+    le_date = models.DateTimeField(db_column='LE_Date')  # Field name made lowercase.
+    lz_reference = models.CharField(db_column='LZ_Reference', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    lz_delivery_to = models.CharField(db_column='LZ_Delivery To', max_length=9, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    lz_name = models.CharField(db_column='LZ_Name', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    lz_party_ref_no = models.CharField(db_column='LZ_Party Ref No', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    lz_vehicle_no = models.CharField(db_column='LZ_Vehicle No', max_length=16, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    lz_incharge = models.CharField(db_column='LZ_Incharge', max_length=35, blank=True, null=True)  # Field name made lowercase.
+    rf_tot_qty = models.DecimalField(db_column='RF_Tot Qty', max_digits=18, decimal_places=4)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    lz_department = models.CharField(db_column='LZ_Department', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    lz_completed = models.SmallIntegerField(db_column='LZ_Completed', blank=True, null=True)  # Field name made lowercase.
+    sl = models.IntegerField(db_column='Sl', blank=True, null=True)  # Field name made lowercase.
+    inwdate = models.DateField(db_column='InwDate', blank=True, null=True)  # Field name made lowercase.
+    inwdcno = models.CharField(db_column='InwDcNo', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    qtyreceived = models.IntegerField(db_column='QtyReceived', blank=True, null=True)  # Field name made lowercase.
+    ourdcno = models.CharField(db_column='OurDcNo', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    party = models.CharField(db_column='Party', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    verified = models.CharField(db_column='Verified', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    inw_date = models.CharField(db_column='Inw_Date', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'General_Delivery_Report'
+
+
+class EmpMasAll(models.Model):
+    code_emb_staff_emp_details = models.IntegerField(db_column='Code Emb Staff Emp Details',primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    name = models.CharField(max_length=100, blank=True, null=True)
+    mobile = models.CharField(max_length=50, blank=True, null=True)
+    dept = models.CharField(max_length=70, blank=True, null=True)
+    emppic = models.CharField(db_column='EmpPic', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+    rel_code_name_dept = models.CharField(db_column='Rel_code_name_dept', max_length=162, blank=True, null=True)  # Field name made lowercase.
+    photo_pending = models.CharField(db_column='Photo Pending', max_length=400, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    con_name_dept_cate_mob_cur_unit = models.CharField(db_column='Con_name_Dept_Cate_mob_Cur_unit', max_length=308, blank=True, null=True)  # Field name made lowercase.
+    con_code_hos_m_f_qua_join = models.CharField(db_column='Con_Code_hos_m_f_Qua_join', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    con_acc_acc1_bank = models.CharField(db_column='Con_acc_acc1_bank', max_length=604, blank=True, null=True)  # Field name made lowercase.
+    trn = models.CharField(max_length=1, blank=True, null=True)
+    sl = models.IntegerField(blank=True, null=True)
+    sc = models.CharField(max_length=2, blank=True, null=True)
+    code_emb_staff = models.IntegerField(db_column='Code Emb staff', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    category = models.CharField(db_column='Category', max_length=70, blank=True, null=True)  # Field name made lowercase.
+    intercom = models.CharField(max_length=50, blank=True, null=True)
+    hostel = models.CharField(db_column='Hostel', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    roomdtls = models.CharField(db_column='Roomdtls', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    orissa = models.CharField(max_length=3, blank=True, null=True)
+    bank = models.CharField(db_column='Bank', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    accountdetails = models.CharField(db_column='Accountdetails', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    grp2 = models.IntegerField(blank=True, null=True)
+    prs = models.CharField(max_length=50, blank=True, null=True)
+    qualification = models.CharField(db_column='Qualification', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    pftype = models.CharField(max_length=10, blank=True, null=True)
+    accountdetails1 = models.CharField(db_column='Accountdetails1', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    attach = models.CharField(max_length=1550, blank=True, null=True)
+    contract_des = models.CharField(max_length=50, blank=True, null=True)
+    inch = models.CharField(max_length=3, blank=True, null=True)
+    sex = models.CharField(max_length=1, blank=True, null=True)
+    nattgrp = models.CharField(max_length=20, blank=True, null=True)
+    salary = models.DecimalField(db_column='Salary', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    inspection = models.CharField(db_column='INSPECTION', max_length=3, blank=True, null=True)  # Field name made lowercase.
+    empprs = models.CharField(db_column='Empprs', max_length=80, blank=True, null=True)  # Field name made lowercase.
+    skilled = models.CharField(max_length=10, blank=True, null=True)
+    aempwatch = models.CharField(max_length=3, blank=True, null=True)
+    joindt = models.CharField(db_column='Joindt', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    con_ori_roomdtls_skilled_inter_dtls_aemp_watch = models.CharField(db_column='Con_ori_roomdtls_skilled_inter_dtls_aemp_watch', max_length=124, blank=True, null=True)  # Field name made lowercase.
+    tasstaff = models.CharField(max_length=3, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Emp_Mas_All'
+
+
+class Staffpre(models.Model):
+    id = models.IntegerField(primary_key=True)
+    code = models.IntegerField()
+    name = models.CharField(max_length=70)
+    wunit = models.CharField(max_length=70, blank=True, null=True)
+    cat = models.CharField(max_length=70, blank=True, null=True)
+    prsdtls = models.CharField(max_length=500, blank=True, null=True)
+    prsdis = models.CharField(max_length=500, blank=True, null=True)
+    mobileno = models.CharField(max_length=50, blank=True, null=True)
+    intercom = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+    attach = models.CharField(max_length=1550, blank=True, null=True)
+    hostel = models.CharField(max_length=50, blank=True, null=True)
+    roomdtls = models.CharField(db_column='Roomdtls', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    orissa = models.CharField(max_length=3, blank=True, null=True)
+    bank = models.CharField(db_column='Bank', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    accountdetails = models.CharField(db_column='Accountdetails', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    branch = models.CharField(max_length=200, blank=True, null=True)
+    badd = models.CharField(max_length=200, blank=True, null=True)
+    ifscno = models.CharField(max_length=200, blank=True, null=True)
+    bact = models.CharField(max_length=1, blank=True, null=True)
+    bank1 = models.CharField(max_length=200, blank=True, null=True)
+    accountdetails1 = models.CharField(db_column='Accountdetails1', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    branch1 = models.CharField(max_length=200, blank=True, null=True)
+    badd1 = models.CharField(max_length=200, blank=True, null=True)
+    ifscno1 = models.CharField(max_length=200, blank=True, null=True)
+    qulification = models.CharField(max_length=50, blank=True, null=True)
+    dtjoin = models.DateTimeField(blank=True, null=True)
+    dtresign = models.DateTimeField(blank=True, null=True)
+    dtrsysdt = models.DateTimeField(blank=True, null=True)
+    pftype = models.CharField(max_length=10, blank=True, null=True)
+    inch = models.CharField(max_length=3, blank=True, null=True)
+    ej = models.DateTimeField(blank=True, null=True)
+    vanno = models.CharField(max_length=50, blank=True, null=True)
+    pfno = models.CharField(max_length=50, blank=True, null=True)
+    esino = models.CharField(max_length=50, blank=True, null=True)
+    ladd1 = models.CharField(db_column='LADD1', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    ladd2 = models.CharField(db_column='LADD2', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    lcity = models.CharField(max_length=50, blank=True, null=True)
+    lstate = models.CharField(max_length=50, blank=True, null=True)
+    lpincode = models.CharField(max_length=50, blank=True, null=True)
+    padd1 = models.CharField(db_column='PADD1', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    padd2 = models.CharField(db_column='PADD2', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    pcity = models.CharField(db_column='PCITY', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    pstate = models.CharField(db_column='PSTATE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    ppincode = models.CharField(db_column='PPINCODE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    emc = models.CharField(db_column='EMC', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    relation = models.CharField(max_length=30, blank=True, null=True)
+    emc_pers = models.CharField(max_length=50, blank=True, null=True)
+    bg = models.CharField(max_length=50, blank=True, null=True)
+    time_template = models.CharField(db_column='Time_Template', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    esiyn = models.CharField(max_length=3, blank=True, null=True)
+    pfyn = models.CharField(max_length=3, blank=True, null=True)
+    senior = models.CharField(max_length=3, blank=True, null=True)
+    time_template1 = models.CharField(db_column='Time_Template1', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    createdate = models.DateTimeField()
+    modifieddate = models.DateTimeField()
+    timestamp = models.TextField()  # This field type is a guess.
+    ebcharge = models.DecimalField(max_digits=18, decimal_places=2, blank=True, null=True)
+    mcategory = models.CharField(db_column='Mcategory', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    lastname = models.CharField(db_column='LastName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    mcateid = models.IntegerField(db_column='Mcateid', blank=True, null=True)  # Field name made lowercase.
+    prab = models.CharField(max_length=7)
+
+    class Meta:
+        managed = False
+        db_table = 'StaffPre'
+
+
+class TBuyer(models.Model):
+    buyerid = models.IntegerField(db_column='BuyerID', primary_key=True)  # Field name made lowercase.
+    buyername = models.CharField(db_column='BuyerName', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    orderno = models.CharField(db_column='OrderNo', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    date = models.DateField(db_column='Date', blank=True, null=True)  # Field name made lowercase.
+    guid = models.CharField(db_column='Guid', max_length=36, blank=True, null=True)  # Field name made lowercase.
+    refresh = models.CharField(db_column='Refresh', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'T_Buyer'
         app_label = 'dhana'

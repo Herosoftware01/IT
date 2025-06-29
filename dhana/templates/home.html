@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyboard Navigation Table</title>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
+    <style>
+        td.selected {
+            background-color: red !important;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Yarn Stock Table</h2>
+
+<table id="example" class="display">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Supplier Name</th>
+            <th>Order No</th>
+            <th>Yarn Name</th>
+            <th>Colour Name</th>
+            <th>Kg</th>
+            <th>Rate</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.date }}</td>
+            <td>{{ item.suppliername }}</td>
+            <td>{{ item.orderno }}</td>
+            <td>{{ item.yarnname }}</td>
+            <td>{{ item.clrname }}</td>
+            <td>{{ item.kg }}</td>
+            <td>{{ item.rate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+<script>
+    const table = new DataTable('#example');
+    let currentCell = null;
+
+    // Click to select a cell
+    $('#example tbody').on('click', 'td', function () {
+        if (currentCell) {
+            currentCell.removeClass('selected');
+        }
+        $(this).addClass('selected');
+        currentCell = $(this);
+    });
+
+    // Keyboard navigation
+    $(document).keydown(function (e) {
+        if (!currentCell) return;
+
+        const cell = currentCell;
+        const row = cell.closest('tr');
+        const cellIndex = cell.index();
+        const rowIndex = row.index();
+
+        let nextCell;
+
+        if (e.key === 'ArrowRight') {
+            nextCell = cell.next('td');
+        } else if (e.key === 'ArrowLeft') {
+            nextCell = cell.prev('td');
+        } else if (e.key === 'ArrowDown') {
+            nextCell = row.next('tr').find('td').eq(cellIndex);
+        } else if (e.key === 'ArrowUp') {
+            nextCell = row.prev('tr').find('td').eq(cellIndex);
+        }
+
+        if (nextCell && nextCell.length) {
+            currentCell.removeClass('selected');
+            nextCell.addClass('selected');
+            currentCell = nextCell;
+        }
+    });
+
+    
+</script>
+
+</body>
+</html>
