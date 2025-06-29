@@ -18,53 +18,79 @@ from django.db import models
 
 
 
-class OrdSampleStatus(models.Model):
+class FabRgbMatrplan(models.Model):
 
-    print = models.CharField(db_column='Print', max_length=750)  # Field name made lowercase.
-
-    emb = models.CharField(db_column='Emb', max_length=750)  # Field name made lowercase.
-
-    date = models.DateTimeField(db_column='DATE', blank=True, null=True)  # Field name made lowercase.
-
-    status = models.CharField(db_column='Status', max_length=20, blank=True, null=True)  # Field name made lowercase.
-
-    image = models.CharField(db_column='Image', max_length=8000, blank=True, null=True)  # Field name made lowercase.
-
-    topbottomimg = models.CharField(db_column='TopBottomImg', max_length=8000, blank=True, null=True)  # Field name made lowercase.
-
-    remarks = models.CharField(db_column='Remarks', max_length=150)  # Field name made lowercase.
-
-    stock = models.IntegerField(db_column='Stock')  # Field name made lowercase.
-
-    cutqty = models.IntegerField(db_column='CutQty')  # Field name made lowercase.
-
-    active = models.CharField(db_column='Active', max_length=10, blank=True, null=True)  # Field name made lowercase.
-
-    o_finaldelvdate = models.DateField(db_column='o_FinalDelvdate', blank=True, null=True)  # Field name made lowercase.
+    tbimg = models.CharField(max_length=8000, blank=True, null=True)
 
     jobno = models.CharField(db_column='Jobno', max_length=50)  # Field name made lowercase.
 
-    merch = models.CharField(db_column='Merch', max_length=35, blank=True, null=True)  # Field name made lowercase.
+    combocolor = models.CharField(db_column='ComboColor', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
-    buy = models.CharField(db_column='Buy', max_length=5, blank=True, null=True)  # Field name made lowercase.
+    mp = models.CharField(max_length=50, blank=True, null=True)
 
-    buyer = models.CharField(db_column='Buyer', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(max_length=50, blank=True, null=True)
 
-    sample_status = models.CharField(db_column='Sample Status', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    dyeclr = models.CharField(db_column='Dyeclr', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
-    unitname = models.CharField(db_column='Unitname', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    prnclr = models.CharField(db_column='Prnclr', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
-    topbottom_des = models.CharField(db_column='TopBottom_des', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    gsm = models.IntegerField(db_column='GSM')  # Field name made lowercase.
 
-    colour = models.CharField(db_column='Colour', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    fdia = models.CharField(db_column='Fdia', max_length=70, blank=True, null=True)  # Field name made lowercase.
 
-    sampletype = models.CharField(db_column='Sampletype', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    kdia = models.CharField(max_length=35)
 
-    send_dt = models.DateTimeField(db_column='SEND_DT', blank=True, null=True)  # Field name made lowercase.
+    pcswgt = models.CharField(max_length=70, blank=True, null=True)
 
-    apr_dt = models.DateTimeField(db_column='APR_DT', blank=True, null=True)  # Field name made lowercase.
+    size = models.CharField(max_length=35)
 
-    rej_dt = models.DateTimeField(db_column='REJ_DT', blank=True, null=True)  # Field name made lowercase.
+    losspercent = models.DecimalField(db_column='LossPercent', max_digits=5, decimal_places=2)  # Field name made lowercase.
+
+    quantity = models.DecimalField(db_column='Quantity', max_digits=38, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+
+    fabricno = models.IntegerField(db_column='FabricNo')  # Field name made lowercase.
+
+    ord_image = models.CharField(db_column='Ord_image', max_length=8000, blank=True, null=True)  # Field name made lowercase.
+
+    hex = models.CharField(max_length=15, blank=True, null=True)
+
+    fimage = models.CharField(db_column='Fimage', max_length=8000)  # Field name made lowercase.
+
+    fabty = models.CharField(db_column='FabTy', max_length=35, blank=True, null=True)  # Field name made lowercase.
+
+    withoutfabimg = models.CharField(db_column='WithOutFabImg', max_length=13)  # Field name made lowercase.
+
+    withoutrgb = models.CharField(db_column='WithOutRGB', max_length=10)  # Field name made lowercase.
+
+    fabric = models.CharField(db_column='Fabric', max_length=35)  # Field name made lowercase.
+
+    yarninfo = models.CharField(db_column='YarnInfo', max_length=971, blank=True, null=True)  # Field name made lowercase.
+
+    ll = models.CharField(max_length=114)
+
+    con_dyeclr_prnclr = models.CharField(db_column='Con_dyeclr_prnclr', max_length=102, blank=True, null=True)  # Field name made lowercase.
+
+    con_ord_clr_fab = models.CharField(db_column='Con_Ord_Clr_Fab', max_length=139, blank=True, null=True)  # Field name made lowercase.
+
+    withoutll = models.CharField(max_length=9)
+
+    o_buyer = models.CharField(db_column='O_Buyer', max_length=40, blank=True, null=True)  # Field name made lowercase.
+
+    o_merch = models.CharField(db_column='O_Merch', max_length=35, blank=True, null=True)  # Field name made lowercase.
+
+    o_productionunit = models.CharField(db_column='O_ProductionUnit', max_length=35, blank=True, null=True)  # Field name made lowercase.
+
+    o_ordtype = models.CharField(db_column='O_OrdType', max_length=6)  # Field name made lowercase.
+
+    o_prodtype = models.CharField(db_column='O_ProdType', max_length=7)  # Field name made lowercase.
+
+    con = models.CharField(db_column='Con', max_length=193, blank=True, null=True)  # Field name made lowercase.
+
+    o_styledesc = models.CharField(db_column='o_StyleDesc', max_length=35, blank=True, null=True)  # Field name made lowercase.
+
+    director = models.CharField(max_length=35)
+
+    planned = models.IntegerField(db_column='Planned')  # Field name made lowercase.
 
 
 
@@ -72,5 +98,5 @@ class OrdSampleStatus(models.Model):
 
         managed = False
 
-        db_table = 'Ord_Sample_status'
+        db_table = 'Fab_RGB_matrplan'
 
