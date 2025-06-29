@@ -1,0 +1,17 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+  {{ block.super }}
+  {% if custom_button %}
+
+  <div>
+    {{ pyg_html|safe }}
+  </div>
+  
+    <li>
+      <a class="button" href="{% url 'home' %}" target="_blank">
+        Go to Report
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
