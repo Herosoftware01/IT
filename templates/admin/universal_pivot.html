@@ -1,0 +1,117 @@
+{% extends "admin/base_site.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block extrahead %}
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pivottable@2.23.0/dist/pivot.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/pivottable@2.23.0/dist/pivot.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<style>
+  .pvtTable th, .pvtTable td {
+    color: #ffffff; /* White text for better visibility */
+  }
+
+  .pvtTable th {
+    background-color: #546160 !important; /* Darker background */
+    font-weight: bold;
+  }
+
+  .pvtTable thead tr:nth-child(1) th {
+    background-color: #546160 !important; /* Even darker for top headers */
+  }
+
+  .pvtTable thead tr:nth-child(2) th {
+    background-color: #546160 !important;
+  }
+  
+    #output .pvtTable {
+    /* width: 100% !important; */
+    /* max-width: 100% !important; */
+    table-layout: auto !important;
+  }
+
+  #output .pvtTable th,
+  #output .pvtTable td {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+
+  .pvtRendererArea {
+    overflow-x: auto;
+  }
+
+</style>
+
+
+<div id="output" ></div>
+
+<script type="text/javascript">
+  const modelMeta = {{ model_meta|safe }};
+  const pivotDataUrl = "{{ pivot_data_url }}";  // this is a full URL string, NOT an object
+
+  fetch(pivotDataUrl)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Fetched data >>>", data);
+
+      // Convert numeric strings to numbers
+      data.forEach(row => {
+        modelMeta.fields.forEach(f => {
+          if (typeof row[f] === 'string' && !isNaN(row[f])) {
+            row[f] = parseFloat(row[f]);
+          }
+        });
+      });
+
+      const sample = data[0];
+      const fields = modelMeta.fields;
+      const valFields = fields.filter(f => typeof sample[f] === 'number');
+
+      const rowFields = [];
+      const colFields = [];
+
+      for (let f of fields) {
+        if (f === 'id') continue;
+        if (typeof sample[f] === 'string') {
+          if (/https?:\/\/.*\.(jpg|jpeg|png|gif)/i.test(sample[f])) {
+            rowFields.push(f);
+          } else if (!rowFields.length) {
+            rowFields.push(f);
+          } else if (!colFields.length) {
+            colFields.push(f);
+          }
+        }
+      }
+
+      $("#output").pivotUI(data, {
+        rows: rowFields,
+        cols: colFields,
+        aggregatorName: "Sum",
+        vals: valFields,
+        rendererName: "Table",
+        onRefresh: function() {
+            setTimeout(() => {
+                $('.pvtTable td, .pvtTable th').each(function () {
+                const text = $(this).text().trim();
+                const urls = text.match(/https?:\/\/[^\s"']+\.(jpeg|jpg|gif|png)/gi);
+                if (urls?.length) {
+                    const imgsHtml = urls.map(url =>
+                    `<img src="${url}" width="60" height="60" style="margin:2px; border-radius: 8px; border: 1px solid #555;">`
+                    ).join('<br>');
+                    $(this).html(imgsHtml);
+                }
+                });
+            }, 10);
+            }
+      });
+    });
+</script>
+
+<br>
+<a href="{% url 'admin:'|add:model_meta.app_label|add:'_'|add:model_meta.model_name|add:'_changelist' %}" class="button">← Back to List</a>
+{% endblock %}
+

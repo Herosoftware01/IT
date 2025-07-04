@@ -26,13 +26,13 @@ SECRET_KEY = 'django-insecure-omi%2mik6&dbqfu_r&&2gr@9_u9-pl6pj@wj@^x*7(d-kzliwk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.81', '103.125.155.133', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.73', '103.125.155.133', 'localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    #'jazzmin',
     #'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'dhana',
     'gopal',
     'bala',
- 
+    'pivot',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'HF.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],  # Add your templates directory here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
