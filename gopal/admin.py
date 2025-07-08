@@ -24,7 +24,7 @@ class FabYarnAdmin(PivotTableMixin,admin.ModelAdmin):
     # search_fields = ('fabty', 'supplier', 'orderno', 'clr', 'fabric')
     # list_filter = ('fabty', 'supplier')
     # list_per_page = 10 
-    pivot_fields = ['fabty', 'supplier', 'orderno', 'clr', 'fabric', 'prs', 'kg']
+    pivot_fields = ['image_order','fabty', 'supplier', 'orderno', 'clr', 'fabric', 'prs', 'kg']
 
     class Media:
         js = ('admin/js/cell-select.js',)
