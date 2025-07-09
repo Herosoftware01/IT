@@ -52,9 +52,11 @@ class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).using('demo')  
 
+
 admin.site.register(Empstaff, EmpstaffAdmin)
 admin.site.register(FabYarn, FabYarnAdmin)
 admin.site.register(Employeelogin, EmployeeloginAdmin)
+
 
 
 # Register your models here.
