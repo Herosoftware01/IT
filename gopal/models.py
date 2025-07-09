@@ -70,10 +70,6 @@ class Employeelogin(models.Model):
     class Meta:
         managed = False
         db_table = 'EmployeeLogin'
-<<<<<<< HEAD
-    
-    
-=======
 
 class OrdStk(models.Model):
     trstype = models.CharField(db_column='Trstype', max_length=6)  # Field name made lowercase.
@@ -110,4 +106,3 @@ class OrdStk(models.Model):
             return mark_safe(f'<img src="{self.orderimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
         return "No Image"
     admin_image_preview.short_description = "Image"
->>>>>>> gopal
