@@ -108,6 +108,7 @@ class OrdStk(models.Model):
             return mark_safe(f'<img src="{self.orderimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
         return "No Image"
     admin_image_preview.short_description = "Image"
+<<<<<<< HEAD
 
     def admin_image_preview(self):
         if self.tbimage:
@@ -115,3 +116,5 @@ class OrdStk(models.Model):
         return "No Image"
     admin_image_preview.short_description = "Image"
 >>>>>>> gopal
+=======
+>>>>>>> 66cec32059d32dcd344102810459cb20a0b1cd0e
