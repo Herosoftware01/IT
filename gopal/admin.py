@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empstaff, FabYarn, Employeelogin
+from .models import Empstaff, FabYarn, Employeelogin , OrdStk
 from pivot import PivotTableMixin
 
 
@@ -52,9 +52,25 @@ class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).using('demo')  
 
+class OrdStkAdmin(PivotTableMixin,admin.ModelAdmin):
+    list_display = ('admin_image_preview', 'trstype', 'jobno', 'tb', 'total', 'unit', 'clr', 'bc', 'sew')
+    # search_fields = ('trstype', 'jobno', 'tb')
+    # list_filter = ('trstype',)
+    pivot_fields = ['orderimage','trstype', 'total', 'unit', 'jobno', 'tb', 'clr', 'bc', 'sew']
+
+    class Media:
+        js = ('admin/js/cell-select.js',)
+        css = {
+            'all': ('admin/css/cell-select.css',)
+        }
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).using('mssql')
+
 admin.site.register(Empstaff, EmpstaffAdmin)
 admin.site.register(FabYarn, FabYarnAdmin)
 admin.site.register(Employeelogin, EmployeeloginAdmin)
+admin.site.register(OrdStk, OrdStkAdmin)
 
 
 # Register your models here.
