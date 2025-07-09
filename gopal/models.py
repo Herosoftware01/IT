@@ -71,6 +71,7 @@ class Employeelogin(models.Model):
         managed = False
         db_table = 'EmployeeLogin'
 
+
 class OrdStk(models.Model):
     trstype = models.CharField(db_column='Trstype', max_length=6)  # Field name made lowercase.
     total = models.IntegerField(db_column='Total', blank=True, null=True)  # Field name made lowercase.
@@ -106,3 +107,11 @@ class OrdStk(models.Model):
             return mark_safe(f'<img src="{self.orderimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
         return "No Image"
     admin_image_preview.short_description = "Image"
+
+
+    def admin_image_preview(self):
+        if self.tbimage:
+            return mark_safe(f'<img src="{self.tbimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
+        return "No Image"
+    admin_image_preview.short_description = "Image"
+
