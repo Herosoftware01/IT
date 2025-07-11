@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empstaff, FabYarn, Employeelogin
+from .models import Empstaff, FabYarn, Employeelogin,OrdStk
 from pivot import PivotTableMixin
 
 
@@ -70,6 +70,7 @@ class OrdStkAdmin(PivotTableMixin,admin.ModelAdmin):
 admin.site.register(Empstaff, EmpstaffAdmin)
 admin.site.register(FabYarn, FabYarnAdmin)
 admin.site.register(Employeelogin, EmployeeloginAdmin)
+admin.site.register(OrdStk, OrdStkAdmin)
 
 
 
