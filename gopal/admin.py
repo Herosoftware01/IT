@@ -71,3 +71,7 @@ admin.site.register(Empstaff, EmpstaffAdmin)
 admin.site.register(FabYarn, FabYarnAdmin)
 admin.site.register(Employeelogin, EmployeeloginAdmin)
 admin.site.register(OrdStk, OrdStkAdmin)
+
+
+
+# Register your models here.
