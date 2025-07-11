@@ -29,10 +29,13 @@ class PivotTableMixin(admin.ModelAdmin):
         app_label = model._meta.app_label
         model_name = model._meta.model_name
 
+        # Show all fields (columns), excluding 'id'
+        all_fields = [f.name for f in model._meta.fields if f.name != 'id']
+
         model_meta = {
             'app_label': app_label,
             'model_name': model_name,
-            'fields': [f.name for f in model._meta.fields if f.name != 'id']
+            'fields': all_fields
         }
 
         pivot_data_url = reverse(f'admin:{app_label}_{model_name}_pivot_data')
@@ -41,17 +44,20 @@ class PivotTableMixin(admin.ModelAdmin):
             self.admin_site.each_context(request),
             title=f'{model._meta.verbose_name_plural.title()} Pivot Table',
             model_meta=model_meta,
-            pivot_data_url=pivot_data_url  # ✅ THIS IS IMPORTANT
+            pivot_data_url=pivot_data_url
         )
 
         return TemplateResponse(request, "admin/universal_pivot.html", context)
 
-
     def pivot_data(self, request):
+        # Show all fields (columns)
+        fields = self.pivot_fields if self.pivot_fields else [f.name for f in self.model._meta.fields if f.name != 'id']
+        # Show all rows
+        queryset = self.model.objects.using('mssql').all()
         data = []
-        for obj in self.model.objects.using('mssql',).all():
+        for obj in queryset:
             row = {}
-            for field in self.pivot_fields:
+            for field in fields:
                 value = getattr(obj, field, None)
                 if isinstance(value, Decimal):
                     value = float(value)
