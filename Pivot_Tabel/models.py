@@ -105,13 +105,5 @@ class OrdStk(models.Model):
         if self.tbimage:
             return mark_safe(f'<img src="{self.tbimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
         return "No Image"
-    admin_image_preview.short_description = "Image"
-
-
-
-
-
-
-
-
+    admin_image_preview_tb.short_description = "Image"
 

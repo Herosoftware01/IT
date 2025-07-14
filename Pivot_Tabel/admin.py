@@ -5,8 +5,8 @@ from pivot import PivotTableMixin
 
 class EmpstaffAdmin(PivotTableMixin,admin.ModelAdmin):
     list_display = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
-    # search_fields = ('name', 'wunit', 'workunit')
-    # list_filter = ('wunit', 'workunit', 'hostel')
+    search_fields = ('name', 'wunit', 'workunit','code')
+    list_filter = ('wunit', 'workunit', 'hostel')
     pivot_fields = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
     
     class Media:
@@ -39,8 +39,6 @@ class FabYarnAdmin(PivotTableMixin,admin.ModelAdmin):
 
 class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
     list_display = ('code', 'name', 'hod', 'hodid', 'email')
-    # search_fields = ('name', 'email')
-    # list_filter = ('hod',)
     pivot_fields = ['code', 'name', 'hod', 'hodid', 'email']
 
     class Media:
@@ -53,7 +51,7 @@ class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
         return super().get_queryset(request).using('demo')  
 
 class OrdStkAdmin(PivotTableMixin,admin.ModelAdmin):
-    list_display = ('admin_image_preview','admin_image_preview_tb', 'trstype', 'jobno', 'tb', 'total', 'unit', 'clr', 'bc', 'sew','che','irn', 'pack', 'oth', 'mist', 'trstype_all', 'deldt', 'merch', 'ip','director_sample_order','finaldelvdate','final_year_delivery','insdatenew','c',)
+    list_display = ('admin_image_preview','admin_image_preview_tb','trstype', 'jobno', 'tb', 'total', 'unit', 'clr', 'bc', 'sew','che','irn', 'pack', 'oth', 'mist', 'trstype_all', 'deldt', 'merch', 'ip','director_sample_order','finaldelvdate','final_year_delivery','insdatenew','c',)
     # search_fields = ('trstype', 'jobno', 'tb')
     # list_filter = ('trstype',)
     pivot_fields = ['orderimage','tbimage','trstype', 'total', 'unit', 'jobno', 'tb', 'clr', 'bc', 'sew','che', 'irn', 'pack', 'oth', 'mist', 'trstype_all', 'deldt', 'merch', 'ip','director_sample_order','finaldelvdate','final_year_delivery','insdatenew','c',]
