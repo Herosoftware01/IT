@@ -28,6 +28,7 @@ class PivotTableMixin(admin.ModelAdmin):
         model = self.model
         app_label = model._meta.app_label
         model_name = model._meta.model_name
+        
 
         # Show all fields (columns), excluding 'id'
         all_fields = [f.name for f in model._meta.fields if f.name != 'id']
