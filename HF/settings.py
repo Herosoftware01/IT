@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'App',
     'dhana',
-    'gopal',
+    'Pivot_Tabel',
     'bala',
     'pivot',
 ]
@@ -109,7 +109,7 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['App.database_router.MasterRouter','dhana.database_router.MasterRouter','gopal.database_router.MasterRouter','vishwa.database_router.MasterRouter']
+DATABASE_ROUTERS = ['App.database_router.MasterRouter','dhana.database_router.MasterRouter','Pivot_Tabel.database_router.MasterRouter','vishwa.database_router.MasterRouter']
 
 
 # Password validation

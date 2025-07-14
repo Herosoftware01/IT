@@ -1,9 +1,10 @@
 from django.contrib import admin
 from .models import Empstaff, FabYarn, Employeelogin,OrdStk
+from Pivot_Tabel.apps import PivotTabelConfig
 from pivot import PivotTableMixin
 
 
-class EmpstaffAdmin(PivotTableMixin,admin.ModelAdmin):
+class EmpstaffAdmin(PivotTableMixin, admin.ModelAdmin):
     list_display = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
     search_fields = ('name', 'wunit', 'workunit','code')
     list_filter = ('wunit', 'workunit', 'hostel')

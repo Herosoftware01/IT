@@ -60,8 +60,15 @@ class PivotTableMixin(admin.ModelAdmin):
             row = {}
             for field in fields:
                 value = getattr(obj, field, None)
+                # If the value is a method, call it
+                if callable(value):
+                    value = value()
+                # Handle Decimal values
                 if isinstance(value, Decimal):
                     value = float(value)
+                # Convert datetime to string if needed
+                if hasattr(value, 'strftime'):
+                    value = value.strftime('%Y-%m-%d %H:%M:%S')
                 row[field] = value
             data.append(row)
         return JsonResponse(data, safe=False)

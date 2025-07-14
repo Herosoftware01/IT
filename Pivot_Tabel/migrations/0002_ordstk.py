@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gopal', '0001_initial'),
+        ('Pivot_Tabel', '0001_initial'),
     ]
 
     operations = [
