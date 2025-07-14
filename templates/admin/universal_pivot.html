@@ -53,19 +53,35 @@
   const modelMeta = {{ model_meta|safe }};
   const pivotDataUrl = "{{ pivot_data_url }}";  // this is a full URL string, NOT an object
 
+ 
   fetch(pivotDataUrl)
     .then(response => response.json())
     .then(data => {
-      console.log("Fetched data >>>", data);
+      if (!Array.isArray(data)) return;
 
-      // Convert numeric strings to numbers
-      data.forEach(row => {
-        modelMeta.fields.forEach(f => {
-          if (typeof row[f] === 'string' && !isNaN(row[f])) {
-            row[f] = parseFloat(row[f]);
-          }
-        });
+      $("#output").pivotUI(data, {
+        rows: ["jobno", "trstype", "orderimage","finaldelvdate"],
+        cols: ["unit","clr","director_sample_order","ip" ],
+        aggregatorName: "Count",
+        rendererName: "Table",
+        onRefresh: function(config) {
+          console.log("Pivot table refreshed with config:", config);
+          setTimeout(() => {
+            $('.pvtTable td, .pvtTable th').each(function () {
+              const text = $(this).text().trim();
+              const urls = text.match(/https?:\/\/[^\s"']+\.(jpeg|jpg|gif|png)/gi);
+              if (urls?.length) {
+                const imgsHtml = urls.map(url =>
+                  `<img src="${url}" width="60" height="60" style="margin:2px; border-radius: 8px; border: 1px solid #555;">`
+                ).join('<br>');
+                $(this).html(imgsHtml);
+              }
+            });
+          }, 10);
+        }
       });
+    });
+
 
       const sample = data[0];
       const fields = modelMeta.fields;
@@ -108,7 +124,7 @@
             }, 10);
             }
       });
-    });
+    
 </script>
 
 <br>

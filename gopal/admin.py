@@ -5,8 +5,8 @@ from pivot import PivotTableMixin
 
 class EmpstaffAdmin(PivotTableMixin,admin.ModelAdmin):
     list_display = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
-    # search_fields = ('name', 'wunit', 'workunit')
-    # list_filter = ('wunit', 'workunit', 'hostel')
+    search_fields = ('name', 'wunit', 'workunit','code')
+    list_filter = ('wunit', 'workunit', 'hostel')
     pivot_fields = ('code', 'name', 'admin_image_preview','mobileno', 'wunit', 'workunit', 'hostel',)
     
     class Media:
@@ -39,8 +39,6 @@ class FabYarnAdmin(PivotTableMixin,admin.ModelAdmin):
 
 class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
     list_display = ('code', 'name', 'hod', 'hodid', 'email')
-    # search_fields = ('name', 'email')
-    # list_filter = ('hod',)
     pivot_fields = ['code', 'name', 'hod', 'hodid', 'email']
 
     class Media:
