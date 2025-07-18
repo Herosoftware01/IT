@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GopalConfig(AppConfig):
+class PivotTabelConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'gopal'
+    name = 'Pivot_Tabel'

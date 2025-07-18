@@ -52,18 +52,6 @@ class FabYarn(models.Model):
     admin_image_preview.short_description = "Image"
 
 
-class Employeelogin(models.Model):
-    code = models.IntegerField(db_column='Code', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
-    hod = models.BooleanField(db_column='HOD')  # Field name made lowercase.
-    hodid = models.IntegerField(db_column='HODID', blank=True, null=True)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    email = models.CharField(db_column='Email', unique=True, max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    ot = models.BooleanField(db_column='OT')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'EmployeeLogin'
 
 class OrdStk(models.Model):
     trstype = models.CharField(db_column='Trstype', max_length=6)  # Field name made lowercase.
@@ -106,4 +94,43 @@ class OrdStk(models.Model):
             return mark_safe(f'<img src="{self.tbimage}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
         return "No Image"
     admin_image_preview_tb.short_description = "Image"
+
+
+class EmpLogin(models.Model):
+    code = models.ForeignKey('Employeelogin',on_delete=models.DO_NOTHING, db_column='Code', to_field='code', primary_key=True, db_constraint=False,max_length=50)  # 
+
+    # code = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', primary_key=True)
+    name = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    hod = models.CharField(max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    password = models.CharField(db_column='Password', max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    emailid = models.CharField(db_column='EmailID', max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Employee_Login'
+
+    def __str__(self):
+        return self.name
+    
+    def email(self):
+        return self.code.email if self.code else None
+
+
+
+
+
+class Employeelogin(models.Model):
+    code = models.IntegerField(db_column='Code', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    hod = models.BooleanField(db_column='HOD')  # Field name made lowercase.
+    hodid = models.IntegerField(db_column='HODID', blank=True, null=True)  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=50, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    email = models.CharField(db_column='Email', unique=True, max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    ot = models.BooleanField(db_column='OT')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'EmployeeLogin'
+
+    
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empstaff, FabYarn, Employeelogin,OrdStk
+from .models import Empstaff, FabYarn, Employeelogin,OrdStk,EmpLogin
 from pivot import PivotTableMixin
 
 
@@ -36,20 +36,6 @@ class FabYarnAdmin(PivotTableMixin,admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).using('mssql')
         # return super().get_queryset(request).using('demo')  
-
-class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
-    list_display = ('code', 'name', 'hod', 'hodid', 'email')
-    pivot_fields = ['code', 'name', 'hod', 'hodid', 'email']
-
-    class Media:
-        js = ('admin/js/cell-select.js',)
-        css = {
-            'all': ('admin/css/cell-select.css',)
-        }
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).using('demo')  
-
 class OrdStkAdmin(PivotTableMixin,admin.ModelAdmin):
     list_display = ('admin_image_preview','admin_image_preview_tb','trstype', 'jobno', 'tb', 'total', 'unit', 'clr', 'bc', 'sew','che','irn', 'pack', 'oth', 'mist', 'trstype_all', 'deldt', 'merch', 'ip','director_sample_order','finaldelvdate','final_year_delivery','insdatenew','c',)
     # search_fields = ('trstype', 'jobno', 'tb')
@@ -65,10 +51,41 @@ class OrdStkAdmin(PivotTableMixin,admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).using('mssql')
 
+class EmpLoginAdmin(PivotTableMixin,admin.ModelAdmin):
+    list_display = ('code', 'name', 'hod','email','password')
+    search_fields = ('code', 'name', 'emailid')
+
+    class Media:
+        js = ('admin/js/cell-select.js',)
+        css = {
+            'all': ('admin/css/cell-select.css',)
+        }
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).using('demo')
+
+
+
+class EmployeeloginAdmin(PivotTableMixin,admin.ModelAdmin):
+    list_display = ('code', 'name', 'hod', 'hodid', 'email','password','ot')
+    pivot_fields = ['code', 'name', 'hod', 'hodid', 'email']
+
+    class Media:
+        js = ('admin/js/cell-select.js',)
+        css = {
+            'all': ('admin/css/cell-select.css',)
+        }
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).using('demo')  
+
+
 admin.site.register(Empstaff, EmpstaffAdmin)
 admin.site.register(FabYarn, FabYarnAdmin)
-admin.site.register(Employeelogin, EmployeeloginAdmin)
 admin.site.register(OrdStk, OrdStkAdmin)
+admin.site.register(Employeelogin, EmployeeloginAdmin)
+admin.site.register(EmpLogin, EmpLoginAdmin)
+
 
 
 
