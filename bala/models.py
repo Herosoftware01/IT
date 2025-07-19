@@ -1,5 +1,10 @@
 from django.db import models
 from django.utils.html import mark_safe
+import os
+from django.utils.safestring import mark_safe
+import shutil
+from django.conf import settings
+from django.conf.urls.static import static
 
 class OrdStk(models.Model):
     trstype = models.CharField(db_column='Trstype', max_length=6)  # Field name made lowercase.
@@ -87,7 +92,8 @@ class OrdSampleStatus(models.Model):
     print = models.CharField(db_column='Print', max_length=750)  # Field name made lowercase.
 
     emb = models.CharField(db_column='Emb', max_length=750)  # Field name made lowercase.
-
+    img = models.CharField(max_length=79, blank=True, null=True)
+    img1 = models.CharField(max_length=1550, blank=True, null=True)
     date = models.DateTimeField(db_column='DATE', blank=True, null=True)  # Field name made lowercase.
 
     status = models.CharField(db_column='Status', max_length=20, blank=True, null=True)  # Field name made lowercase.
@@ -130,6 +136,65 @@ class OrdSampleStatus(models.Model):
 
     rej_dt = models.DateTimeField(db_column='REJ_DT', blank=True, null=True)  # Field name made lowercase.
 
+   
+    def admin_image_preview(self):
+        if self.img:
+            filename = os.path.basename(self.img)
+            dest_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+            # Ensure media folder exists
+            os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+
+            # Copy only if not already present
+            if not os.path.exists(dest_path):
+                try:
+                    if os.path.exists(self.img):
+                        shutil.copy(self.img, dest_path)
+                    else:
+                        return f"❌ Not Found: {self.img}"
+                except Exception as e:
+                    return f"❌ Copy failed: {str(e)}"
+
+            return mark_safe(f'<img src="/media/{filename}" width="100" style="border:1px solid #ccc; border-radius:8px;" />')
+
+        return "No Image"
+
+    admin_image_preview.short_description = "Image Preview"
+
+
+
+    def admin_image_preview1(self):
+        if self.img1:
+            filename = os.path.basename(self.img1)
+            dest_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+            # Ensure media folder exists
+            os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+
+            # Copy only if not already present
+            if not os.path.exists(dest_path):
+                try:
+                    if os.path.exists(self.img1):
+                        shutil.copy(self.img1, dest_path)
+                    else:
+                        return f"❌ Not Found: {self.img1}"
+                except Exception as e:
+                    return f"❌ Copy failed: {str(e)}"
+
+            return mark_safe(f'<img src="/media/{filename}" width="100" style="border:1px solid #ccc; border-radius:8px;" />')
+
+        return "No Image"
+
+    admin_image_preview1.short_description = "TB Image"
+    
+
+    # def admin_image_preview1(self):
+    #     if self.img1:
+    #         filename = self.topbottomimg.split("\\")[-1]
+    #         url = f"http://itadmin/Order_Images/{filename}"
+    #         return mark_safe(f'<img src="{url}" width="100" style="border:1px solid #100; border-radius:10%;" />')
+    #     return "No Image"
+    # admin_image_preview1.short_description = "TB Image"
 
 
     class Meta:
@@ -137,18 +202,7 @@ class OrdSampleStatus(models.Model):
         managed = False
 
         db_table = 'Ord_Sample_status'
-    
-    def admin_image_preview(self):
-        if self.image:
-            return mark_safe(f'<img src="{self.image}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
-        return "No Image"
-    admin_image_preview.short_description = "Image"
 
-    def admin_image_preview1(self):
-        if self.topbottomimg:
-            return mark_safe(f'<img src="{self.topbottomimg}" alt="" width="100" style="border: 1px solid #100; border-radius:10%;"/>')
-        return "No Image"
-    admin_image_preview1.short_description = "TbImage"
 
 class AllotPen(models.Model):
 
@@ -280,7 +334,7 @@ class FabRgbMatrplan(models.Model):
 
     tbimg = models.CharField(max_length=8000, blank=True, null=True)
 
-    jobno = models.CharField(db_column='Jobno', max_length=50)  # Field name made lowercase.
+    jobno = models.CharField(db_column='Jobno', max_length=50, primary_key=True)  # Field name made lowercase.
 
     combocolor = models.CharField(db_column='ComboColor', max_length=50, blank=True, null=True)  # Field name made lowercase.
 

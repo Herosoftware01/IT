@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-omi%2mik6&dbqfu_r&&2gr@9_u9-pl6pj@wj@^x*7(d-kzliwk
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
-ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.73', '103.125.155.133', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['10.1.21.11', '10.1.21.73', '103.125.155.133', 'localhost', '127.0.0.1','10.1.21.13']
 
 
 # Application definition
@@ -45,9 +46,14 @@ INSTALLED_APPS = [
     'Pivot_Tabel',
     'bala',
     'pivot',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,6 +64,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'HF.urls'
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://herofashion.vercel.app",
+# ]
+
 
 TEMPLATES = [
     {
@@ -85,12 +97,37 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'mssql': {
+    
+    # 'mssql': {
+    #     'ENGINE': 'mssql',
+    #     'NAME': 'HeroPowerBi',
+    #     'USER': 'sa',
+    #     'PASSWORD': 'Fashion@01',
+    #     'HOST': '10.1.21.11',
+    #     'PORT': '1433',
+    #     'OPTIONS': {
+    #         'driver': 'ODBC Driver 17 for SQL Server',
+    #     }
+    # },
+
+     'mssql': {
         'ENGINE': 'mssql',
-        'NAME': 'HeroPowerBi',
+        'NAME': 'herofashion-backup',
+        'USER': 'herofashion',
+        'PASSWORD': 'Fashion@1234',
+        'HOST': 'herofashion-sql.database.windows.net',
+        'PORT': '1433',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        }
+    },
+
+    'testerp': {
+        'ENGINE': 'mssql',
+        'NAME': 'testerphero',
         'USER': 'sa',
         'PASSWORD': 'Fashion@01',
-        'HOST': 'ITADMIN',
+        'HOST': '10.1.21.11',
         'PORT': '1433',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
@@ -157,6 +194,22 @@ STATICFILES_DIRS = [
 
 # For production (collectstatic output)
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+MEDIA_URL = '/images/'
+MEDIA_ROOT = r'\\Adminserver\H\All images\export'
+
+
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = 'Z:\\'
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

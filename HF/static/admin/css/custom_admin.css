@@ -1,0 +1,6 @@
+ .changelist-form thead th {
+        position: sticky;
+        top: 0; /* Sticks to the top of the scroll container */
+        background-color: #c91414; /* Optional: Add a background to prevent content showing through */
+        z-index: 10; /* Ensures the header stays on top of other content */
+    }

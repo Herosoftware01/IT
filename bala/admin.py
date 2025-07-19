@@ -29,6 +29,12 @@ class OrdSampleStatusAdmin(admin.ModelAdmin):
                     'buyer', 'sample_status', 'unitname', 'topbottom_des','emb',
                     'colour', 'sampletype', 'send_dt', 'apr_dt', 'rej_dt')
     search_fields = ('jobno','merch','buyer','sample_status')
+    list_per_page = 999999
+
+    class Media:
+        css = {
+            'all': ('admin/css/custom_admin.css',)
+        }
 
     def get_queryset(self, request):
        return super().get_queryset(request).using('mssql')

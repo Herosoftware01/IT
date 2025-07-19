@@ -1,5 +1,10 @@
 from django.db import models
-
+from django.utils.html import mark_safe
+from django.utils.html import mark_safe
+import os
+from django.utils.safestring import mark_safe
+import shutil
+from django.conf import settings
 
 class AllotOrderKisbal(models.Model):
     orderno = models.CharField(db_column='OrderNo', max_length=50, primary_key=True)  # Field name made lowercase.
@@ -93,6 +98,9 @@ class PrintRgbAlt(models.Model):
     jobno_print_emb = models.CharField(db_column='Jobno Print Emb', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     img_fpath = models.CharField(db_column='Img_Fpath', max_length=8000, blank=True, null=True)  # Field name made lowercase.
     hex = models.CharField(max_length=15, blank=True, null=True)
+    prnfile1 = models.CharField(max_length=250, blank=True, null=True)
+    prnfile2 = models.CharField(max_length=250, blank=True, null=True)
+    imgtb1 = models.CharField(max_length=1550, blank=True, null=True)
     print_img_pen = models.CharField(db_column='Print_img_pen', max_length=13)  # Field name made lowercase.
     image_tb = models.CharField(db_column='Image_tb', max_length=8000, blank=True, null=True)  # Field name made lowercase.
     con_fimg_grclr = models.CharField(db_column='Con_Fimg_grclr', max_length=20, blank=True, null=True)  # Field name made lowercase.
@@ -138,6 +146,90 @@ class PrintRgbAlt(models.Model):
     print_colour_rgb_6 = models.CharField(db_column='Print Colour RGB 6', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     print_colour_rgb_7 = models.CharField(db_column='Print Colour RGB 7', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     print_colour_rgb_8 = models.CharField(db_column='Print  Colour RGB 8', max_length=15, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    
+    def display_order_image(self):
+        if self.imgtb1:
+            filename = os.path.basename(self.imgtb1)
+            dest_path = os.path.join(settings.MEDIA_ROOT, filename)
+            # Ensure media folder exists
+            os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+            # Copy only if not already present
+            if not os.path.exists(dest_path):
+                try:
+                    if os.path.exists(self.imgtb1):
+                        shutil.copy(self.imgtb1, dest_path)
+                    else:
+                        return f"❌ Not Found: {self.imgtb1}"
+                except Exception as e:
+                    return f"❌ Copy failed: {str(e)}"
+
+            return mark_safe(f'<img src="/media/{filename}" width="100" style="border:1px solid #ccc; border-radius:8px;" />')
+        return "No Image"
+    display_order_image.short_description = "Image TB"
+
+    def img_print_display(self):
+        if self.prnfile1:
+            filename = os.path.basename(self.prnfile1)
+            dest_path = os.path.join(settings.MEDIA_ROOT, filename)
+            # Ensure media folder exists
+            os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+            # Copy only if not already present
+            if not os.path.exists(dest_path):
+                try:
+                    if os.path.exists(self.prnfile1):
+                        shutil.copy(self.prnfile1, dest_path)
+                    else:
+                        return f"❌ Not Found: {self.prnfile1}"
+                except Exception as e:
+                    return f"❌ Copy failed: {str(e)}"
+
+            return mark_safe(f'<img src="/media/{filename}" width="100" style="border:1px solid #ccc; border-radius:8px;" />')
+        return "No Image"
+    img_print_display.short_description = "Img Print"
+
+    def img_print_mmt_display(self):
+        if self.prnfile2:
+            filename = os.path.basename(self.prnfile2)
+            dest_path = os.path.join(settings.MEDIA_ROOT, filename)
+            # Ensure media folder exists
+            os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+            # Copy only if not already present
+            if not os.path.exists(dest_path):
+                try:
+                    if os.path.exists(self.prnfile2):
+                        shutil.copy(self.prnfile2, dest_path)
+                    else:
+                        return f"❌ Not Found: {self.prnfile2}"
+                except Exception as e:
+                    return f"❌ Copy failed: {str(e)}"
+
+            return mark_safe(f'<img src="/media/{filename}" width="100" style="border:1px solid #ccc; border-radius:8px;" />')
+        return "No Image"
+    img_print_mmt_display.short_description = "Img Print MMT"
+
+    def get_imgtb1_url(self):
+        return self._copy_and_get_url(self.imgtb1)
+
+    def get_prnfile1_url(self):
+        return self._copy_and_get_url(self.prnfile1)
+
+    def get_prnfile2_url(self):
+        return self._copy_and_get_url(self.prnfile2)
+
+    def _copy_and_get_url(self, full_path):
+        if not full_path:
+            return None
+        filename = os.path.basename(full_path)
+        dest_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+        try:
+            os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+            if not os.path.exists(dest_path) and os.path.exists(full_path):
+                shutil.copy(full_path, dest_path)
+        except Exception as e:
+            return f"Error: {str(e)}"
+        
+        return f"{settings.MEDIA_URL}{filename}"
 
     class Meta:
         managed = False
@@ -345,3 +437,262 @@ class TBuyer(models.Model):
         managed = False
         db_table = 'T_Buyer'
         app_label = 'dhana'
+
+
+
+class OrdUdfCompleteK(models.Model):
+    jobno_udf_complete = models.CharField(db_column='Jobno UDF Complete', max_length=50, primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    number_001_printing = models.CharField(db_column='001 Printing', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_002_delivery = models.CharField(db_column='002 Delivery', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_003_embroidery = models.CharField(db_column='003 Embroidery', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_004_compacting = models.CharField(db_column='004 Compacting', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_005_cutting = models.CharField(db_column='005 Cutting', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_006_textile = models.CharField(db_column='006 Textile', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_007 = models.CharField(db_column='007', max_length=750, blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    number_008_fabric = models.CharField(db_column='008_Fabric', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
+    number_009_carton = models.CharField(db_column='009 Carton', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_010_label = models.CharField(db_column='010 Label', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_011_pr_machine = models.CharField(db_column='011 Pr Machine', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_012_pr_table = models.CharField(db_column='012 Pr Table', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_013_punching = models.CharField(db_column='013 Punching', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_014_dyeing = models.CharField(db_column='014 Dyeing', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_015_transfer = models.CharField(db_column='015 Transfer', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_016_screen = models.CharField(db_column='016 Screen', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_017_doc = models.CharField(db_column='017 Doc', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_018_rib = models.CharField(db_column='018 Rib', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_019_emb_thread = models.CharField(db_column='019 Emb Thread', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_020_yarn = models.CharField(db_column='020 Yarn', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_021_pr_dyes = models.CharField(db_column='021 Pr Dyes', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_022_draw_back = models.CharField(db_column='022 Draw back', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_023_pat_1_size = models.CharField(db_column='023 Pat 1 size', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_024_pat_all_size = models.CharField(db_column='024 Pat all Size', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_025_week = models.CharField(db_column='025 Week', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_026_order_payment = models.CharField(db_column='026 Order payment', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_027_pr_colour_app = models.CharField(db_column='027 Pr Colour App', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_028_pr_flim = models.CharField(db_column='028 Pr Flim', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_029_colour = models.CharField(db_column='029 Colour', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_030_packing_list = models.CharField(db_column='030 Packing List', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_031_inspection = models.CharField(db_column='031 Inspection', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_032_woven = models.CharField(db_column='032 Woven', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_033_carton_slip = models.CharField(db_column='033 CArton Slip', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_034_sample = models.CharField(db_column='034 Sample', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_035 = models.CharField(db_column='035', max_length=750, blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    number_036_fab_in = models.CharField(db_column='036 Fab In', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_037_rotary = models.CharField(db_column='037 Rotary', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_038_extra_fabric = models.CharField(db_column='038 Extra Fabric', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_039_pro_sample = models.CharField(db_column='039 Pro Sample', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_040_lab_test = models.CharField(db_column='040 Lab Test', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_041_ll = models.CharField(db_column='041 LL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_042_compacting_dia = models.CharField(db_column='042  Compacting Dia', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_043 = models.CharField(db_column='043', max_length=750, blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    number_044 = models.CharField(db_column='044', max_length=750, blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    number_045_stitching = models.CharField(db_column='045 Stitching', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_45_o = models.CharField(db_column='45-O', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_45_r = models.CharField(db_column='45-R', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_45_o_141_o = models.CharField(db_column='45-O/141-O', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_046_organic = models.CharField(db_column='046  Organic', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_047_dyeing_name = models.CharField(db_column='047  Dyeing Name', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_048_com_name = models.CharField(db_column='048   Com Name', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_049_pr_dyes = models.CharField(db_column='049   Pr Dyes', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_050_merch = models.CharField(db_column='050   Merch', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_051_eco = models.CharField(db_column='051   Eco', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_052_sample = models.CharField(db_column='052  Sample', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_053_print_shape_bit = models.CharField(db_column='053  Print Shape Bit', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_054_pr_msmt = models.CharField(db_column='054  Pr Msmt', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_055_emb_details = models.CharField(db_column='055  Emb Details', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_056_print_details = models.CharField(db_column='056  Print Details', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_057_acc_details = models.CharField(db_column='057 Acc Details', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_058_emb_msmt = models.CharField(db_column='058 Emb Msmt', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_059_emb_shape_bit = models.CharField(db_column='059  Emb Shape Bit', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_060_others = models.CharField(db_column='060 Others', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_061_dri = models.CharField(db_column='061 Dri', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_062_amma_godown = models.CharField(db_column='062 Amma Godown', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_063_amma_godown_pro = models.CharField(db_column='063 Amma Godown PRO', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_064_out_side_work = models.CharField(db_column='064 Out Side Work', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_065_label_details = models.CharField(db_column='065 Label Details', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_066_fabric_details = models.CharField(db_column='066 Fabric Details', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_067_t_dia = models.CharField(db_column='067 T Dia', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_068_v_u = models.CharField(db_column='068 V&U', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_069_bc_ac = models.CharField(db_column='069 BC-AC', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_070_pro_qty = models.CharField(db_column='070  Pro Qty', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_071_sup_cmnts = models.CharField(db_column='071 Sup Cmnts', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_072_os_pattern = models.CharField(db_column='072 OS Pattern', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_073_order = models.CharField(db_column='073 Order', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_074_use = models.CharField(db_column='074  use', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_075_e_del_date = models.CharField(db_column='075  E Del Date', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_076_p_del_date = models.CharField(db_column='076  P Del Date', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_077_d_rate = models.CharField(db_column='077 D Rate', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_078_rate = models.CharField(db_column='078 Rate', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_079_lab = models.CharField(db_column='079  Lab', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_080_emb_name = models.CharField(db_column='080 emb name', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_081_d_sample = models.CharField(db_column='081 D Sample', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_082_k_dia_f_dia = models.CharField(db_column='082 K.Dia F.Dia', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_083_c_result = models.CharField(db_column='083 C Result', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_084_doc_description = models.CharField(db_column='084  Doc Description', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_085_a = models.CharField(db_column='085 A', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_086_su_a = models.CharField(db_column='086 Su A', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_089_incharge_name = models.CharField(db_column='089 Incharge Name', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_090 = models.CharField(db_column='090', max_length=750, blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    number_092_copy = models.CharField(db_column='092 copy', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_093_kaja = models.CharField(db_column='093  kaja', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_094_dye_send = models.CharField(db_column='094 dye send', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_095_emb_status = models.CharField(db_column='095 Emb Status', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_096_progaram = models.CharField(db_column='096 PROGARAM', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_097_fab_pro = models.CharField(db_column='097  FAB PRO', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_098_hand_cutting = models.CharField(db_column='098  HAND CUTTING', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_099_contract_cutting = models.CharField(db_column='099  CONTRACT CUTTING', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_101_prg_ch = models.CharField(db_column='101 Prg Ch', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_102_stitch_date = models.CharField(db_column='102 Stitch Date', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_103_emb_date = models.CharField(db_column='103  Emb Date', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_104_print_date = models.CharField(db_column='104  Print Date', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_105_cutting_date = models.CharField(db_column='105  Cutting Date', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_106_merch = models.CharField(db_column='106 MERCH', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_107_viji = models.CharField(db_column='107  VIJI', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_108_mani = models.CharField(db_column='108  MANI', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_109_saba = models.CharField(db_column='109 SABA', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_110_sara = models.CharField(db_column='110 SARA', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_111_mani = models.CharField(db_column='111  MANI', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_112_saba = models.CharField(db_column='112   SABA', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_113_fb = models.CharField(db_column='113  FB', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_114_p = models.CharField(db_column='114 P', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_115_c = models.CharField(db_column='115 C', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_116_final_prog = models.CharField(db_column='116  Final Prog', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_117_cm = models.CharField(db_column='117  CM', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_118_cm_por = models.CharField(db_column='118  CM POR', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_119_dy_st = models.CharField(db_column='119  DY ST', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_120_com_st = models.CharField(db_column='120 COM ST', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_121_cd = models.CharField(db_column='121   CD', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_122_cd_st = models.CharField(db_column='122  CD ST', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_123_yarn = models.CharField(db_column='123 YARN', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_124_ne_drop = models.CharField(db_column='124  NE DROP', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_125_stock_order = models.CharField(db_column='125  STOCK ORDER', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_126_pcs_wt_chk = models.CharField(db_column='126  Pcs WT Chk', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_127_po = models.CharField(db_column='127  po', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_128_box = models.CharField(db_column='128   Box', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_129_sc = models.CharField(db_column='129  SC', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_130_ntgt = models.CharField(db_column='130  NTGT', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_131_priority = models.CharField(db_column='131  PRIORITY', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_132_lf = models.CharField(db_column='132 LF', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_133_lab_po = models.CharField(db_column='133 LAB PO', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_134_lab_dtl = models.CharField(db_column='134  LAB DTL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_135_roll_check = models.CharField(db_column='135 ROLL CHECK', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_136_fabric_reciever = models.CharField(db_column='136  FABRIC RECIEVER', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_137_pr_emb_msmt = models.CharField(db_column='137  PR EMB MSMT', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_138_yarn = models.CharField(db_column='138  YARN', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_139_cora = models.CharField(db_column='139  CORA', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_140_dyed = models.CharField(db_column='140  DYED', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_141_debit = models.CharField(db_column='141 DEBIT', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_141_r = models.CharField(db_column='141-R', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_141_o = models.CharField(db_column='141-O', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_45141 = models.CharField(db_column='45141', max_length=750, blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    number_142_debit_detail = models.CharField(db_column='142  DEBIT DETAIL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_143_garment = models.CharField(db_column='143  GARMENT', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_144_garment_detail = models.CharField(db_column='144   GARMENT DETAIL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_145_label = models.CharField(db_column='145  LABEL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_146_label_detail = models.CharField(db_column='146  LABEL DETAIL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_147_textile = models.CharField(db_column='147  TEXTILE', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_148_textile_detail = models.CharField(db_column='148   TEXTILE DETAIL', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_149_a_style = models.CharField(db_column='149  A style', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_150_dd_date = models.CharField(db_column='150 DD DATE', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_151_ready_fab = models.CharField(db_column='151  Ready Fab', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_152_dd_date = models.CharField(db_column='152  DD DATE', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_153_wo = models.CharField(db_column='153   WO', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_154_ex = models.CharField(db_column='154   EX', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_155_press_but = models.CharField(db_column='155   PRESS BUT', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_156_date = models.CharField(db_column='156  DATE', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_157_compacting = models.CharField(db_column='157 COMPACTING', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_158_jakka = models.CharField(db_column='158  JAKKA', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_159_pho_card = models.CharField(db_column='159  PHO CARD', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_160_in_date = models.CharField(db_column='160  IN DATE', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_161_test = models.CharField(db_column='161  TEST', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_162_sup = models.CharField(db_column='162 sup', max_length=750, blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    number_45_r_141_r = models.CharField(db_column='45-R/141-R', max_length=750, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+
+    class Meta:
+        managed = False
+        db_table = 'Ord_UDF Complete K'
+        app_label = 'dhana' 
+
+
+
+class OrdOrderOms(models.Model):
+    udf_info = models.ForeignKey(
+        'OrdUdfCompleteK',  # ✅ Use the model name as a string
+        to_field='jobno_udf_complete',
+        db_column='Jobno_Oms',  # This field exists in this model and points to the UDF table
+        on_delete=models.DO_NOTHING,
+        related_name='order_records',
+        null=True,
+        blank=True,
+    )
+    insdatenew = models.CharField(db_column='insdateNew', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    # jobno_oms = models.CharField(db_column='Jobno_Oms', max_length=50)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    printing = models.CharField(db_column='Printing', max_length=750, blank=True, null=True)  # Field name made lowercase.
+    jobnoomsnew = models.CharField(db_column='JobnoOmsnew', max_length=50, primary_key=True)  # Field name made lowercase.
+    mainimagepath = models.CharField(max_length=511, blank=True, null=True)
+    ordimg1_pen = models.CharField(db_column='OrdImg1_Pen', max_length=9)  # Field name made lowercase.
+    styleid = models.IntegerField()
+    final_delivery_date = models.CharField(db_column='Final delivery date', max_length=4000, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    finaldelvdate1 = models.DateTimeField(blank=True, null=True)
+    year = models.CharField(db_column='Year', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    final_year_delivery = models.CharField(db_column='Final Year delivery', max_length=4000, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    final_year_delivery1 = models.CharField(db_column='Final Year delivery1', max_length=4000, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    ddays = models.IntegerField(blank=True, null=True)
+    fdays = models.IntegerField(db_column='Fdays', blank=True, null=True)  # Field name made lowercase.
+    insdays = models.IntegerField(blank=True, null=True)
+    finaldelvdate = models.CharField(db_column='FinalDelvDate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    ourdeldate = models.CharField(db_column='Ourdeldate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    date = models.CharField(db_column='Date', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    ourdelvdate = models.CharField(db_column='OurDelvDate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    podate = models.CharField(db_column='PODate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    vessel_dt = models.CharField(max_length=4000, blank=True, null=True)
+    vessel_yr = models.CharField(max_length=4000, blank=True, null=True)
+    pono = models.CharField(db_column='PONo', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    shipmentcompleted = models.SmallIntegerField(db_column='ShipmentCompleted')  # Field name made lowercase.
+    reference = models.CharField(max_length=2100, blank=True, null=True)
+    no = models.CharField(db_column='No', max_length=50)  # Field name made lowercase.
+    company_name = models.CharField(db_column='Company Name', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    mer_un = models.CharField(max_length=71, blank=True, null=True)
+    image_order = models.CharField(db_column='Image Order', max_length=4000, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    abc = models.CharField(db_column='ABC', max_length=1, blank=True, null=True)  # Field name made lowercase.
+    order_follow_up = models.CharField(db_column='Order_Follow_up', max_length=35)  # Field name made lowercase.
+    quality_controller = models.CharField(db_column='Quality Controller', max_length=35)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    buyer_sh = models.CharField(db_column='Buyer_sh', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    punit_sh = models.CharField(db_column='PUnit_sh', max_length=6, blank=True, null=True)  # Field name made lowercase.
+    insdateyear = models.CharField(db_column='insdateYear', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    insdate = models.CharField(db_column='Insdate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    quantity = models.IntegerField(db_column='Quantity', blank=True, null=True)  # Field name made lowercase.
+    buyer = models.CharField(db_column='Buyer', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    merch = models.CharField(max_length=35, blank=True, null=True)
+    u46 = models.CharField(max_length=750, blank=True, null=True)
+    actdaten = models.DateTimeField(db_column='actdateN', blank=True, null=True)  # Field name made lowercase.
+    actdate = models.CharField(db_column='Actdate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    actyeardate = models.CharField(db_column='Actyeardate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    con_actdate = models.CharField(db_column='Con_Actdate', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    production_unit = models.CharField(db_column='Production_unit', max_length=35, blank=True, null=True)  # Field name made lowercase.
+    director_sample_order = models.CharField(db_column='Director_Sample_Order', max_length=6)  # Field name made lowercase.
+    z_o_ordfol_qualitycon = models.CharField(db_column='Z_O_Ordfol_Qualitycon', max_length=72, blank=True, null=True)  # Field name made lowercase.
+    con_ordno_mer_buy = models.CharField(db_column='Con_ordno_mer_buy', max_length=95, blank=True, null=True)  # Field name made lowercase.
+    con_ord_un_buy_mer_sty_qty = models.CharField(db_column='Con_ord_un_buy_mer_sty_Qty', max_length=173, blank=True, null=True)  # Field name made lowercase.
+    z_o_dd_ord_findt_buy_mer_qty = models.CharField(db_column='Z_O_DD_Ord_Findt_Buy_mer_Qty', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    z_o_yy_findt_dir_sty_uom_pty = models.CharField(db_column='Z_O_yy_Findt_dir_sty_uom_pty', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    con_str_sty_uom_prodty = models.CharField(db_column='Con_Str_Sty_UOM_Prodty', max_length=22, blank=True, null=True)  # Field name made lowercase.
+    con_findt_ordno_dir_un_buy_uom_qty_mer = models.CharField(db_column='Con_Findt_ordno_dir_un_Buy_Uom_Qty_mer', max_length=4000, blank=True, null=True)  # Field name made lowercase.
+    production_type_inside_outside = models.CharField(db_column='Production_type_Inside_Outside', max_length=7, blank=True, null=True)  # Field name made lowercase.
+    shipment_complete = models.CharField(db_column='Shipment_complete', max_length=9, blank=True, null=True)  # Field name made lowercase.
+    
+
+
+    @property
+    def jobno_oms(self):
+        return self.udf_info_id
+
+    def __str__(self):
+        return f"{self.udf_info_id} - {self.printing}"
+    class Meta:
+        managed = False
+        db_table = 'Ord_Order_Oms'
+        app_label = 'dhana' 
+
+
+

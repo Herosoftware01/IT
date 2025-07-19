@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fast Streaming Order Data</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #spinner {
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
+      display: block;
+      margin: 20px 0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+    }
+    th {
+      background-color: #f0f0f0;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    tbody {
+      display: block;
+      max-height: 600px;
+      overflow: auto;
+    }
+    thead, tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📦 Streaming Order Data</h2>
+<div id="spinner">⏳ Loading data, please wait...</div>
+
+<table>
+  <thead>
+    <tr id="tableHead"></tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+  $(document).ready(function () {
+    fetch('/dhana/astream_order_data/')
+      .then(response => {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let result = '';
+        
+        return reader.read().then(function process({ done, value }) {
+          if (done) {
+            try {
+              const data = JSON.parse(result);
+              $('#spinner').hide();
+
+              if (data.length === 0) {
+                $('#tableBody').html('<tr><td colspan="100">No data found</td></tr>');
+                return;
+              }
+
+              const keys = Object.keys(data[0]);
+              keys.forEach(key => {
+                $('#tableHead').append(`<th>${key}</th>`);
+              });
+
+              data.forEach(row => {
+                let tr = '<tr>';
+                keys.forEach(key => {
+                  tr += `<td>${row[key] ?? ''}</td>`;
+                });
+                tr += '</tr>';
+                $('#tableBody').append(tr);
+              });
+            } catch (e) {
+              $('#spinner').text('❌ Failed to parse data');
+              console.error('JSON Parse Error:', e);
+            }
+            return;
+          }
+
+          result += decoder.decode(value, { stream: true });
+          return reader.read().then(process);
+        });
+      })
+      .catch(error => {
+        $('#spinner').text('❌ Error loading data');
+        console.error('Streaming Error:', error);
+      });
+  });
+</script>
+
+</body>
+</html>
